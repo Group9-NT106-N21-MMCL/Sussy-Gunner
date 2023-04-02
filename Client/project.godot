@@ -1,0 +1,16 @@
+config_version=5
+
+[application]
+
+config/name="Sussy-gunner-client"
+config/features=PackedStringArray("4.0", "GL Compatibility")
+config/icon="res://icon.svg"
+
+[dotnet]
+
+project/assembly_name="Sussy-gunner"
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
