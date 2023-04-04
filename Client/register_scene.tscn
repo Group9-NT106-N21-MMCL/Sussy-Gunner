@@ -1,0 +1,76 @@
+[gd_scene load_steps=5 format=3 uid="uid://co582uia36wlu"]
+
+[ext_resource type="Texture2D" uid="uid://n2vngkfqw2nq" path="res://images/background.jpg" id="1_iexil"]
+[ext_resource type="Script" path="res://register_scene.gd" id="1_k0jp5"]
+[ext_resource type="FontFile" uid="uid://cptihme2u2tow" path="res://fonts/In your face, joffrey!.ttf" id="2_lvv0i"]
+[ext_resource type="FontFile" uid="uid://dv3i8uafmag63" path="res://fonts/among-us-impostograph-regular-betterstudio.com/Impostograph-Regular.ttf" id="3_8porb"]
+
+[node name="RegisterScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_k0jp5")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(574.889, 326.5)
+scale = Vector2(0.599074, 0.599074)
+texture = ExtResource("1_iexil")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -50.0
+offset_right = 242.0
+offset_bottom = 62.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="EmailBox" type="LineEdit" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_lvv0i")
+theme_override_font_sizes/font_size = 50
+placeholder_text = "Enter your email"
+alignment = 1
+
+[node name="UsernameBox" type="LineEdit" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_lvv0i")
+theme_override_font_sizes/font_size = 50
+placeholder_text = "Enter your username"
+alignment = 1
+
+[node name="PasswordBox" type="LineEdit" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_lvv0i")
+theme_override_font_sizes/font_size = 50
+placeholder_text = "Enter your password"
+alignment = 1
+secret = true
+
+[node name="Login Button" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_pressed_color = Color(0.564706, 0.180392, 0.184314, 1)
+theme_override_colors/font_hover_color = Color(0.564706, 0.180392, 0.184314, 1)
+theme_override_fonts/font = ExtResource("3_8porb")
+theme_override_font_sizes/font_size = 50
+text = "LOGIN
+"
+
+[node name="BackButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_pressed_color = Color(0.564706, 0.180392, 0.184314, 1)
+theme_override_colors/font_hover_color = Color(0.564706, 0.180392, 0.184314, 1)
+theme_override_fonts/font = ExtResource("3_8porb")
+theme_override_font_sizes/font_size = 50
+text = "BACK TO MENU
+"
+
+[connection signal="pressed" from="VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
