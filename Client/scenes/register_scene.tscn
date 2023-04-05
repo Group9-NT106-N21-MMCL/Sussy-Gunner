@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://co582uia36wlu"]
 
+[ext_resource type="Script" path="res://register_scene.cs" id="1_4wcnl"]
 [ext_resource type="Texture2D" uid="uid://n2vngkfqw2nq" path="res://images/background.jpg" id="1_iexil"]
-[ext_resource type="Script" path="res://register_scene.gd" id="1_k0jp5"]
 [ext_resource type="FontFile" uid="uid://cptihme2u2tow" path="res://fonts/In your face, joffrey!.ttf" id="2_lvv0i"]
 [ext_resource type="FontFile" uid="uid://dv3i8uafmag63" path="res://fonts/among-us-impostograph-regular-betterstudio.com/Impostograph-Regular.ttf" id="3_8porb"]
 
@@ -12,7 +12,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_k0jp5")
+script = ExtResource("1_4wcnl")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(574.889, 326.5)
@@ -61,7 +61,7 @@ theme_override_colors/font_pressed_color = Color(0.564706, 0.180392, 0.184314, 1
 theme_override_colors/font_hover_color = Color(0.564706, 0.180392, 0.184314, 1)
 theme_override_fonts/font = ExtResource("3_8porb")
 theme_override_font_sizes/font_size = 50
-text = "LOGIN
+text = "Register
 "
 
 [node name="BackButton" type="Button" parent="VBoxContainer"]
@@ -73,4 +73,5 @@ theme_override_font_sizes/font_size = 50
 text = "BACK TO MENU
 "
 
+[connection signal="pressed" from="VBoxContainer/Login Button" to="." method="_on_login_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
