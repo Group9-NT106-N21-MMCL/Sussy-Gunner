@@ -42,6 +42,7 @@ alignment = 1
 
 [node name="UsernameBox" type="LineEdit" parent="VBoxContainer"]
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("2_lvv0i")
 theme_override_font_sizes/font_size = 50
 placeholder_text = "Enter your username"
@@ -73,5 +74,7 @@ theme_override_font_sizes/font_size = 50
 text = "BACK TO MENU
 "
 
+[connection signal="text_changed" from="VBoxContainer/EmailBox" to="." method="_on_email_box_text_changed"]
+[connection signal="text_changed" from="VBoxContainer/UsernameBox" to="." method="_on_username_box_text_changed"]
 [connection signal="pressed" from="VBoxContainer/Login Button" to="." method="_on_login_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
