@@ -1,0 +1,83 @@
+[gd_scene load_steps=9 format=3 uid="uid://dn4cna2ux27lb"]
+
+[ext_resource type="Script" path="res://scripts/player_with_gun.cs" id="1_562pm"]
+[ext_resource type="Texture2D" uid="uid://vxxtbgx8s66x" path="res://images/PlayerWithGun.png" id="1_mqjmf"]
+[ext_resource type="Script" path="res://scripts/player_gun.cs" id="2_adf1a"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6jpwt"]
+radius = 18.3
+height = 54.87
+
+[sub_resource type="Animation" id="Animation_n8l6j"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Body:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_lrrri"]
+resource_name = "idle"
+length = 0.1
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Body:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_7ksok"]
+resource_name = "running"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Body:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5rrgy"]
+_data = {
+"RESET": SubResource("Animation_n8l6j"),
+"idle": SubResource("Animation_lrrri"),
+"running": SubResource("Animation_7ksok")
+}
+
+[node name="PlayerWithGun" type="CharacterBody2D"]
+script = ExtResource("1_562pm")
+
+[node name="Body" type="Sprite2D" parent="."]
+texture = ExtResource("1_mqjmf")
+hframes = 4
+vframes = 4
+script = ExtResource("2_adf1a")
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+position = Vector2(-14, 0)
+shape = SubResource("CapsuleShape2D_6jpwt")
+
+[node name="RunningAnimation" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_5rrgy")
+}

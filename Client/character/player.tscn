@@ -1,0 +1,82 @@
+[gd_scene load_steps=8 format=3 uid="uid://x1ek7q727133"]
+
+[ext_resource type="Texture2D" uid="uid://ptw2ucrqri6g" path="res://images/Player.png" id="1_40qti"]
+[ext_resource type="Script" path="res://character/player.cs" id="1_hb005"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lm8re"]
+radius = 27.0
+height = 93.15
+
+[sub_resource type="Animation" id="Animation_pafxr"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Texture:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_vooox"]
+resource_name = "idle"
+length = 0.1
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Texture:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_nkvu4"]
+resource_name = "running"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Texture:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4lqgh"]
+_data = {
+"RESET": SubResource("Animation_pafxr"),
+"idle": SubResource("Animation_vooox"),
+"running": SubResource("Animation_nkvu4")
+}
+
+[node name="Player" type="CharacterBody2D"]
+position = Vector2(564, 294)
+script = ExtResource("1_hb005")
+
+[node name="Texture" type="Sprite2D" parent="."]
+position = Vector2(1, 0)
+texture = ExtResource("1_40qti")
+hframes = 4
+vframes = 4
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_lm8re")
+
+[node name="RunningAnimation" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_4lqgh")
+}
