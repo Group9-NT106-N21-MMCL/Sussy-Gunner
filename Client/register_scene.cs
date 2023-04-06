@@ -25,7 +25,7 @@ public partial class register_scene : Control
 
 		var oblist = new List<object>();
 		oblist.Add(Email); oblist.Add(Username); oblist.Add(Password);
-		Database.Add(Username, Password);
+		
 
 		valueRange.Values = new List<IList<object>> { oblist };
 
@@ -90,10 +90,10 @@ public partial class register_scene : Control
 	{
 		var Green = new Godot.Color(0.0f, 1.0f, 0.0f, 1.0f);
 		var Red = new Godot.Color(1.0f, 0.0f, 0.0f, 1.0f);
-		if (!Database.ContainsKey(new_text))
-			GetNode<LineEdit>("VBoxContainer/UsernameBox").Set("theme_override_colors/font_color", Green);
-		else
-			GetNode<LineEdit>("VBoxContainer/UsernameBox").Set("theme_override_colors/font_color", Red);
+//		if (!Database.ContainsKey(new_text))
+//			GetNode<LineEdit>("VBoxContainer/UsernameBox").Set("theme_override_colors/font_color", Green);
+//		else
+//			GetNode<LineEdit>("VBoxContainer/UsernameBox").Set("theme_override_colors/font_color", Red);
 	}
 }
 

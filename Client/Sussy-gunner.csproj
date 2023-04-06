@@ -2,7 +2,7 @@
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
 		<EnableDynamicLoading>true</EnableDynamicLoading>
-		<RootNamespace>Sussygunner</RootNamespace>
+		<RootNamespace>Sussy-Gunner</RootNamespace>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Google.Apis.Sheets.v4" Version="1.60.0.2979" />
