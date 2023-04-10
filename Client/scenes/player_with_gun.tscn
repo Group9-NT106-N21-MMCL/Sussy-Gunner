@@ -65,6 +65,8 @@ _data = {
 }
 
 [node name="PlayerWithGun" type="CharacterBody2D"]
+position = Vector2(558, 321)
+scale = Vector2(2, 2)
 script = ExtResource("1_562pm")
 
 [node name="Body" type="Sprite2D" parent="."]

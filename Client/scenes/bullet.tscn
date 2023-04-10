@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://b3o3br6r6d2lq"]
+
+[ext_resource type="Script" path="res://scripts/bullet.cs" id="1_eng4f"]
+[ext_resource type="Texture2D" uid="uid://caj6farrjoopi" path="res://images/red_bullet.png" id="1_vra72"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0m15l"]
+height = 20.0
+
+[node name="Bullet" type="CharacterBody2D"]
+script = ExtResource("1_eng4f")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_vra72")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_0m15l")

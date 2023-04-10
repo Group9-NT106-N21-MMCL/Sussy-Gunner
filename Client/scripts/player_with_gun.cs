@@ -51,5 +51,6 @@ public partial class player_with_gun : CharacterBody2D
 	{
 		GetInput();
 		MoveAndCollide(_velocity);
+		LookAt(GetGlobalMousePosition());
 	}
 }

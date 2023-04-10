@@ -1,18 +1,15 @@
-[gd_scene load_steps=8 format=3 uid="uid://x1ek7q727133"]
+[gd_scene load_steps=9 format=3 uid="uid://x1ek7q727133"]
 
 [ext_resource type="Texture2D" uid="uid://ptw2ucrqri6g" path="res://images/Player.png" id="1_40qti"]
 [ext_resource type="Script" path="res://character/player.cs" id="1_hb005"]
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lm8re"]
-radius = 27.0
-height = 93.15
+[ext_resource type="Texture2D" uid="uid://l8ykakvcbi28" path="res://images/PlayerHand.png" id="3_vmjno"]
 
 [sub_resource type="Animation" id="Animation_pafxr"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Texture:frame")
+tracks/0/path = NodePath("Character/Body:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -29,7 +26,7 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Texture:frame")
+tracks/0/path = NodePath("Character/Body:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -46,7 +43,7 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Texture:frame")
+tracks/0/path = NodePath("Character/Body:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -63,20 +60,32 @@ _data = {
 "running": SubResource("Animation_nkvu4")
 }
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lm8re"]
+radius = 27.0
+height = 93.15
+
 [node name="Player" type="CharacterBody2D"]
 position = Vector2(564, 294)
 script = ExtResource("1_hb005")
 
-[node name="Texture" type="Sprite2D" parent="."]
+[node name="Character" type="Node2D" parent="."]
+
+[node name="Body" type="Sprite2D" parent="Character"]
 position = Vector2(1, 0)
 texture = ExtResource("1_40qti")
 hframes = 4
 vframes = 4
 
-[node name="Collision" type="CollisionShape2D" parent="."]
-shape = SubResource("CapsuleShape2D_lm8re")
+[node name="Hand" type="Sprite2D" parent="Character"]
+position = Vector2(31, 4)
+scale = Vector2(0.825, 0.825)
+texture = ExtResource("3_vmjno")
 
-[node name="RunningAnimation" type="AnimationPlayer" parent="."]
+[node name="RunningAnimation" type="AnimationPlayer" parent="Character"]
+root_node = NodePath("../..")
 libraries = {
 "": SubResource("AnimationLibrary_4lqgh")
 }
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_lm8re")
