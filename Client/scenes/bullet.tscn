@@ -4,13 +4,18 @@
 [ext_resource type="Texture2D" uid="uid://caj6farrjoopi" path="res://images/red_bullet.png" id="1_vra72"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0m15l"]
-height = 20.0
+radius = 5.0
+height = 15.0
 
 [node name="Bullet" type="CharacterBody2D"]
+position = Vector2(251, 260)
+collision_layer = 2
 script = ExtResource("1_eng4f")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_vra72")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5708
 shape = SubResource("CapsuleShape2D_0m15l")
+one_way_collision_margin = 0.0

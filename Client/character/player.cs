@@ -15,7 +15,6 @@ public partial class player : CharacterBody2D
 
 	PackedScene bulletScene;
 
-
 	public override void _Ready()
 	{
 		character = (Node2D)GetNode("Character");
@@ -104,7 +103,28 @@ public partial class player : CharacterBody2D
 		}
 	}
 
-	public override void _PhysicsProcess(double delta)
+    public override void _UnhandledInput(InputEvent @event)
+    {
+        if(@event is InputEventMouseButton eventMouse)
+        {
+			if(eventMouse.ButtonIndex == MouseButton.Left && eventMouse.Pressed)
+            {
+				GD.Print("Shooted");
+				shoot();
+            }
+        }
+    }
+
+	public void shoot()
+    {
+		var _bullet = (Node2D)bulletScene.Instantiate();
+		AddChild(_bullet);
+		_bullet.Rotation = (GetGlobalMousePosition() - GlobalPosition).Angle();
+		_bullet.Position = body.Position;
+
+	}
+
+    public override void _PhysicsProcess(double delta)
 	{
 		GetInput();
 		MoveAndCollide(_velocity);

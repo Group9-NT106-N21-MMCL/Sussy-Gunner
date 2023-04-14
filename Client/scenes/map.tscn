@@ -1,8 +1,12 @@
-[gd_scene load_steps=2 format=3 uid="uid://dx3btxtx6n24q"]
+[gd_scene load_steps=3 format=3 uid="uid://dx3btxtx6n24q"]
 
-[ext_resource type="PackedScene" uid="uid://dn4cna2ux27lb" path="res://scenes/player_with_gun.tscn" id="1_dw7y7"]
+[ext_resource type="PackedScene" uid="uid://x1ek7q727133" path="res://character/player.tscn" id="1_2fttw"]
+[ext_resource type="PackedScene" uid="uid://b3o3br6r6d2lq" path="res://scenes/bullet.tscn" id="2_41x8s"]
 
 [node name="Map" type="Node2D"]
 
-[node name="PlayerWithGun" parent="." instance=ExtResource("1_dw7y7")]
-position = Vector2(549, 320)
+[node name="Player" parent="." instance=ExtResource("1_2fttw")]
+
+[node name="Bullet" parent="." instance=ExtResource("2_41x8s")]
+visible = false
+position = Vector2(658, 288)
