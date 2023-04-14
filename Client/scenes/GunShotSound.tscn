@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://o3ec1fvwsrqu"]
+
+[ext_resource type="AudioStream" uid="uid://upk31h5jtfcw" path="res://sounds/laser.wav" id="1_7m0ji"]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer"]
+stream = ExtResource("1_7m0ji")
+volume_db = -10.0
+autoplay = true

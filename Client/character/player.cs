@@ -121,6 +121,7 @@ public partial class player : CharacterBody2D
 		AddChild(_bullet);
 		_bullet.Rotation = (GetGlobalMousePosition() - GlobalPosition).Angle();
 		_bullet.Position = body.Position;
+		AudioStream GunSound = Get
 
 	}
 
