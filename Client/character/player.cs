@@ -4,7 +4,7 @@ using System;
 public partial class player : CharacterBody2D
 {
 
-	public int Speed = 10;
+	public int Speed = 7;
 	private Vector2 _velocity = new Vector2();
 	private Vector2 _left_offset = new Vector2(-80, 0);
 
@@ -12,8 +12,10 @@ public partial class player : CharacterBody2D
 	Sprite2D hand;
 	Node2D character;
 	AnimationPlayer animationPlayer;
-
+	Marker2D marker;
+	int ammoAmount = 10;
 	PackedScene bulletScene;
+	Timer timer = new Timer();
 
 	public override void _Ready()
 	{
@@ -22,6 +24,7 @@ public partial class player : CharacterBody2D
 		hand = (Sprite2D)GetNode("Character/Hand");
 		animationPlayer = (AnimationPlayer)GetNode("Character/RunningAnimation");
 		bulletScene = GD.Load<PackedScene>("res://scenes/bullet.tscn");
+		marker = (Marker2D)GetNode("Marker2D");
 	}
 	public void GetInput()
 	{
@@ -76,6 +79,11 @@ public partial class player : CharacterBody2D
 			animationPlayer.Play("running");
 		}
 
+        if (Input.IsActionPressed("reload"))
+        {
+			if(ammoAmount == 0)
+				reload();
+        }
 
 		if (character.Scale.X < 0)
         {
@@ -109,23 +117,37 @@ public partial class player : CharacterBody2D
         {
 			if(eventMouse.ButtonIndex == MouseButton.Left && eventMouse.Pressed)
             {
-				GD.Print("Shooted");
-				shoot();
+				//GD.Print("Shooted");
+				GD.Print(ammoAmount);
+				if(ammoAmount > 0)
+					shoot();
             }
         }
     }
 
+	public void reload()
+    {
+		ammoAmount = 10;
+	}
+
 	public void shoot()
     {
 		var _bullet = (Node2D)bulletScene.Instantiate();
-		AddChild(_bullet);
 		_bullet.Rotation = (GetGlobalMousePosition() - GlobalPosition).Angle();
-		_bullet.Position = body.Position;
+		_bullet.Position = marker.GlobalPosition;
+		_bullet.Scale = new Vector2((float)0.5, (float)0.5);
+		ammoAmount -= 1;
+		GetParent().AddChild(_bullet);
 	}
 
     public override void _PhysicsProcess(double delta)
 	{
 		GetInput();
-		MoveAndCollide(_velocity);
+		MoveAndCollide(_velocity,false,(float)0.8,true);
 	}
+
+	private void _on_area_2d_area_entered(Area2D area)
+    {
+		GD.Print("Enter WareHouse");
+    }
 }

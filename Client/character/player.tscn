@@ -90,3 +90,6 @@ libraries = {
 
 [node name="Collision" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_lm8re")
+
+[node name="Marker2D" type="Marker2D" parent="."]
+position = Vector2(42, 0)
