@@ -10,7 +10,8 @@
 top_level = true
 scale = Vector2(0.5, 0.5)
 
-[node name="Camera2D" type="Camera2D" parent="Player"]
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Player"]
+remote_path = NodePath("../../Camera2D")
 
 [node name="Bullet" parent="." groups=["Bullet"] instance=ExtResource("2_41x8s")]
 visible = false
@@ -93,12 +94,6 @@ polygon = PackedVector2Array(888, 430, 917, 464, 975, 456, 1019, 469, 1063, 449,
 [node name="Rock2&Lava" type="CollisionPolygon2D" parent="Walls"]
 polygon = PackedVector2Array(1176, 721, 1229, 694, 1311, 684, 1349, 687, 1333, 661, 1302, 595, 1434, 598, 1429, 559, 1308, 555, 1311, 490, 1376, 441, 1422, 420, 1395, 310, 1766, 292, 1768, 415, 1768, 559, 1696, 570, 1654, 621, 1584, 670, 1511, 696, 1461, 792, 1245, 807)
 
-[node name="Map" type="Sprite2D" parent="."]
-light_mask = 4
-visibility_layer = 4
-position = Vector2(632, 363)
-texture = ExtResource("3_rwxv8")
-
 [node name="WallArea" type="Area2D" parent="."]
 collision_mask = 7
 
@@ -172,4 +167,22 @@ polygon = PackedVector2Array(888, 430, 917, 464, 975, 456, 1019, 469, 1063, 449,
 position = Vector2(0, 3)
 polygon = PackedVector2Array(1176, 721, 1229, 694, 1311, 684, 1349, 687, 1333, 661, 1302, 595, 1434, 598, 1429, 559, 1308, 555, 1311, 490, 1376, 441, 1422, 420, 1395, 310, 1766, 292, 1768, 415, 1768, 559, 1696, 570, 1654, 621, 1584, 670, 1511, 696, 1461, 792, 1245, 807)
 
-[connection signal="area_entered" from="WallArea" to="Bullet" method="_on_wall_area_area_entered"]
+[node name="Map" type="Sprite2D" parent="."]
+light_mask = 4
+visibility_layer = 4
+position = Vector2(632, 363)
+texture = ExtResource("3_rwxv8")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(564, 294)
+scale = Vector2(0.5, 0.5)
+zoom = Vector2(1.2, 1.2)
+limit_left = -800
+limit_top = -650
+limit_right = 2100
+limit_bottom = 1300
+limit_smoothed = true
+position_smoothing_speed = 10.0
+rotation_smoothing_enabled = true
+rotation_smoothing_speed = 10.0
+editor_draw_limits = true
