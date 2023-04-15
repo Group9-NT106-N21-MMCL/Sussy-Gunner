@@ -16,7 +16,7 @@ public partial class player : CharacterBody2D
 	int ammoAmount = 10;
 	PackedScene bulletScene;
 	Timer timer = new Timer();
-
+	bool isLeft = false;
 	public override void _Ready()
 	{
 		character = (Node2D)GetNode("Character");
@@ -62,6 +62,7 @@ public partial class player : CharacterBody2D
 			character.Scale = new Vector2(1, 1);
 			//hand.Offset = Vector2.Zero;
 			hand.Position = new Vector2(_velocity.X, _velocity.Y);
+			isLeft = false;
 
 		}
 		// Look at the mouse position
@@ -70,6 +71,7 @@ public partial class player : CharacterBody2D
 			character.Scale = new Vector2(-1,1);
 			//hand.Offset = _left_offset;
 			hand.Position = new Vector2(-_velocity.X, _velocity.Y);
+			isLeft = true;
 		}
 		
 		if(!isMove){
@@ -118,7 +120,7 @@ public partial class player : CharacterBody2D
 			if(eventMouse.ButtonIndex == MouseButton.Left && eventMouse.Pressed)
             {
 				//GD.Print("Shooted");
-				GD.Print(ammoAmount);
+				//GD.Print(ammoAmount);
 				if(ammoAmount > 0)
 					shoot();
             }
@@ -132,9 +134,13 @@ public partial class player : CharacterBody2D
 
 	public void shoot()
     {
+		Vector2 moveBack = new Vector2((float)40, (float)0);
 		var _bullet = (Node2D)bulletScene.Instantiate();
 		_bullet.Rotation = (GetGlobalMousePosition() - GlobalPosition).Angle();
-		_bullet.Position = marker.GlobalPosition;
+		if(!isLeft)
+			_bullet.Position = marker.GlobalPosition;
+		else
+			_bullet.Position = marker.GlobalPosition - moveBack;
 		_bullet.Scale = new Vector2((float)0.5, (float)0.5);
 		ammoAmount -= 1;
 		GetParent().AddChild(_bullet);
@@ -146,8 +152,4 @@ public partial class player : CharacterBody2D
 		MoveAndCollide(_velocity,false,(float)0.8,true);
 	}
 
-	private void _on_area_2d_area_entered(Area2D area)
-    {
-		GD.Print("Enter WareHouse");
-    }
 }

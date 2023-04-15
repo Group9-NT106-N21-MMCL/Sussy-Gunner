@@ -17,5 +17,14 @@ public partial class bullet : CharacterBody2D
             QueueFree();
         }
     }
-
+    
+    public void _on_area_2d_area_entered(Area2D area)
+    {
+        if (area.Name == "WallArea")
+        {
+            //GD.Print("HIT");
+            QueueFree();
+        }
+    }
 }
+
