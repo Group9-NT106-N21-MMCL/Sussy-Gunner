@@ -1,9 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://cv5ntapy8fu5b"]
+[gd_scene load_steps=5 format=3 uid="uid://cv5ntapy8fu5b"]
 
-[ext_resource type="Script" path="res://main_menu.gd" id="1_0ish0"]
 [ext_resource type="Texture2D" uid="uid://n2vngkfqw2nq" path="res://images/background.jpg" id="1_bjh0x"]
+[ext_resource type="Script" path="res://scripts/main_menu.cs" id="1_fftm2"]
 [ext_resource type="FontFile" uid="uid://dv3i8uafmag63" path="res://fonts/among-us-impostograph-regular-betterstudio.com/Impostograph-Regular.ttf" id="2_5tms2"]
-[ext_resource type="Script" path="res://LoginButton.gd" id="3_k7oc2"]
 
 [sub_resource type="Theme" id="Theme_gldhm"]
 
@@ -14,7 +13,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_0ish0")
+script = ExtResource("1_fftm2")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(574.889, 326.5)
@@ -44,7 +43,6 @@ theme_override_colors/font_hover_color = Color(0.564706, 0.180392, 0.184314, 1)
 theme_override_fonts/font = ExtResource("2_5tms2")
 theme_override_font_sizes/font_size = 100
 text = "LOGIN"
-script = ExtResource("3_k7oc2")
 
 [node name="RegisterButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
