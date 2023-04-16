@@ -1,7 +1,15 @@
 <Project Sdk="Godot.NET.Sdk/4.0.2">
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <EnableDynamicLoading>true</EnableDynamicLoading>
-    <RootNamespace>Sussygunner</RootNamespace>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<EnableDynamicLoading>true</EnableDynamicLoading>
+		<RootNamespace>Sussygunner</RootNamespace>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="NakamaClient" Version="3.7.0" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Update="DatabaseAPI.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
 </Project>

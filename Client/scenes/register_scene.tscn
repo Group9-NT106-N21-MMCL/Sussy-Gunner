@@ -26,10 +26,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -200.0
-offset_top = -50.0
-offset_right = 242.0
-offset_bottom = 62.0
+offset_left = -221.0
+offset_top = -141.0
+offset_right = 221.0
+offset_bottom = 141.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -56,14 +56,13 @@ placeholder_text = "Enter your password"
 alignment = 1
 secret = true
 
-[node name="Register Button" type="Button" parent="VBoxContainer"]
+[node name="RegisterButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_pressed_color = Color(0.564706, 0.180392, 0.184314, 1)
 theme_override_colors/font_hover_color = Color(0.564706, 0.180392, 0.184314, 1)
 theme_override_fonts/font = ExtResource("3_8porb")
 theme_override_font_sizes/font_size = 50
-text = "Register
-"
+text = "Register"
 
 [node name="BackButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
@@ -74,8 +73,5 @@ theme_override_font_sizes/font_size = 50
 text = "BACK TO MENU
 "
 
-[connection signal="text_changed" from="VBoxContainer/EmailBox" to="." method="_on_email_box_text_changed"]
-[connection signal="text_changed" from="VBoxContainer/UsernameBox" to="." method="_on_username_box_text_changed"]
-[connection signal="text_changed" from="VBoxContainer/PasswordBox" to="." method="_on_password_box_text_changed"]
-[connection signal="pressed" from="VBoxContainer/Register Button" to="." method="_on_register_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/RegisterButton" to="." method="_on_register_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
