@@ -1,7 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://bo5oo004b4fqs"]
+[gd_scene load_steps=5 format=3 uid="uid://b2cuejmifr4i7"]
 
 [ext_resource type="Texture2D" uid="uid://n2vngkfqw2nq" path="res://images/background.jpg" id="1_0pwc5"]
-[ext_resource type="Script" path="res://login_scene.gd" id="1_mofu2"]
+[ext_resource type="Script" path="res://scripts/login_scene.cs" id="1_i3n1p"]
 [ext_resource type="FontFile" uid="uid://cptihme2u2tow" path="res://fonts/In your face, joffrey!.ttf" id="2_3jil4"]
 [ext_resource type="FontFile" uid="uid://dv3i8uafmag63" path="res://fonts/among-us-impostograph-regular-betterstudio.com/Impostograph-Regular.ttf" id="2_ecnwq"]
 
@@ -12,7 +12,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_mofu2")
+script = ExtResource("1_i3n1p")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(574.889, 326.5)
@@ -33,11 +33,11 @@ offset_bottom = 62.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="UsernameBox" type="LineEdit" parent="VBoxContainer"]
+[node name="EmailBox" type="LineEdit" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_3jil4")
 theme_override_font_sizes/font_size = 50
-placeholder_text = "Enter your username"
+placeholder_text = "Enter your email"
 alignment = 1
 
 [node name="PasswordBox" type="LineEdit" parent="VBoxContainer"]
@@ -66,4 +66,7 @@ theme_override_font_sizes/font_size = 50
 text = "BACK TO MENU
 "
 
+[connection signal="text_changed" from="VBoxContainer/EmailBox" to="." method="_on_email_box_text_changed"]
+[connection signal="text_changed" from="VBoxContainer/PasswordBox" to="." method="_on_password_box_text_changed"]
+[connection signal="pressed" from="VBoxContainer/Login Button" to="." method="_on_login_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
