@@ -16,7 +16,7 @@ script = ExtResource("1_i3n1p")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(574.889, 326.5)
-scale = Vector2(0.599074, 0.599074)
+scale = Vector2(0.602, 0.602)
 texture = ExtResource("1_0pwc5")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
