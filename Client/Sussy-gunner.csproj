@@ -7,9 +7,4 @@
 	<ItemGroup>
 		<PackageReference Include="NakamaClient" Version="3.7.0" />
 	</ItemGroup>
-	<ItemGroup>
-		<None Update="DatabaseAPI.json">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
 </Project>

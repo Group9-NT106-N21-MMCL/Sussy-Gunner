@@ -39,7 +39,7 @@ public partial class register_scene : Control
 	public override void _Ready()
 	{
 		const string Scheme = "http";
-		const string Host = "dan-laptop.penguin-major.ts.net";
+		const string Host = "laptop-h0b8jood-docker-desktop.tail94eef.ts.net";
 		const int Port = 7350;
 		const string ServerKey = "defaultkey";
 		client = new Nakama.Client(Scheme, Host, Port, ServerKey);
