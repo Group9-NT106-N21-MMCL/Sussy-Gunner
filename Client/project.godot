@@ -19,6 +19,10 @@ config/icon="res://icon.svg"
 
 BgMusic="*res://bg_music.tscn"
 
+[display]
+
+window/stretch/mode="canvas_items"
+
 [dotnet]
 
 project/assembly_name="Sussy-gunner"
