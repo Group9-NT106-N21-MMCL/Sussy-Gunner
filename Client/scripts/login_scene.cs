@@ -4,16 +4,18 @@ using Nakama;
 
 public partial class login_scene : Control
 {
-    static private IClient client;
-    static private ISocket socket;
+    private IClient client;
     static private ISession session;
+    static private ISocket socket;
     static private readonly Godot.Color White = new Godot.Color("#FFFFFF");
     static private readonly Godot.Color Red = new Godot.Color("#FF0000");
     // Called when the node enters the scene tree for the first time.
+    static public ISession GetSession() => session;
+    static public ISocket GetSocket() => socket;
     public override void _Ready()
     {
         const string Scheme = "http";
-        const string Host = "laptop-h0b8jood-docker-desktop.tail94eef.ts.net";
+        const string Host = "100.119.145.114";
         const int Port = 7350;
         const string ServerKey = "defaultkey";
         client = new Client(Scheme, Host, Port, ServerKey);
@@ -43,8 +45,7 @@ public partial class login_scene : Control
             bool appearOnline = true;
             int connectionTimeout = 30;
             await socket.ConnectAsync(session, appearOnline, connectionTimeout);
-
-            GetTree().ChangeSceneToFile("res://scenes/map.tscn");
+            GetTree().ChangeSceneToFile("res://scenes/dashboard.tscn");
         }
         catch (ApiResponseException e)
         {
