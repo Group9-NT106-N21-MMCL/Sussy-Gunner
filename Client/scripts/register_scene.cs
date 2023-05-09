@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Runtime.CompilerServices;
 using Nakama;
+using Chickensoft.GoDotNet;
 
 public partial class register_scene : Control
 {
@@ -14,7 +15,8 @@ public partial class register_scene : Control
     static private readonly Godot.Color White = new Godot.Color("#FFFFFF");
     static private readonly Godot.Color Green = new Godot.Color("#7CFC00");
     static private readonly Godot.Color Red = new Godot.Color("#FF0000");
-    static private Nakama.Client client;
+    private ClientNode ClientNode => this.Autoload<ClientNode>();
+
     private bool EmailValid(string email)
     {
         var valid = true;
@@ -36,15 +38,7 @@ public partial class register_scene : Control
     }
 
     // Called when the node enters the scene tree for the first time.
-    public override void _Ready()
-    {
-        const string Scheme = "http";
-        const string Host = "100.119.145.114";
-        const int Port = 7350;
-        const string ServerKey = "defaultkey";
-        client = new Nakama.Client(Scheme, Host, Port, ServerKey);
-        client.Timeout = 10;
-    }
+    public override void _Ready() { }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta) { }
@@ -84,10 +78,10 @@ public partial class register_scene : Control
         try
         {
             //Try to login
-            var LoginSession = await client.AuthenticateEmailAsync(Email, Password, UserName, create: false);
+            var LoginSession = await ClientNode.Client.AuthenticateEmailAsync(Email, Password, UserName, create: false);
             GD.Print("Account exist!");
             EmailNode.Set("theme_override_colors/font_color", Red);
-            await client.SessionLogoutAsync(LoginSession);
+            await ClientNode.Client.SessionLogoutAsync(LoginSession);
         }
         catch (ApiResponseException e)
         {
@@ -100,7 +94,7 @@ public partial class register_scene : Control
                 case 5:
                     try
                     {
-                        var RegSession = await client.AuthenticateEmailAsync(Email, Password, UserName, create: true);
+                        var RegSession = await ClientNode.Client.AuthenticateEmailAsync(Email, Password, UserName, create: true);
                         EmailNode.Set("theme_override_colors/font_color", Green);
                         UserNameNode.Set("theme_override_colors/font_color", Green);
                         PasswordNode.Set("theme_override_colors/font_color", Green);

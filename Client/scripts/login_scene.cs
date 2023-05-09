@@ -1,32 +1,18 @@
 using Godot;
 using System;
 using Nakama;
+using Chickensoft.GoDotNet;
 
 public partial class login_scene : Control
 {
-    private IClient client;
-    static private ISession session;
-    static private ISocket socket;
     static private readonly Godot.Color White = new Godot.Color("#FFFFFF");
     static private readonly Godot.Color Red = new Godot.Color("#FF0000");
     // Called when the node enters the scene tree for the first time.
-    static public ISession GetSession() => session;
-    static public ISocket GetSocket() => socket;
-    public override void _Ready()
-    {
-        const string Scheme = "http";
-        const string Host = "100.119.145.114";
-        const int Port = 7350;
-        const string ServerKey = "defaultkey";
-        client = new Client(Scheme, Host, Port, ServerKey);
-        client.Timeout = 10;
-        socket = Socket.From(client);
-    }
+    private ClientNode ClientNode => this.Autoload<ClientNode>();
+    public override void _Ready() { }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
-    public override void _Process(double delta)
-    {
-    }
+    public override void _Process(double delta) { }
     private void _on_back_button_pressed()
     {
         GetTree().ChangeSceneToFile("res://scenes/main_menu.tscn");
@@ -40,11 +26,11 @@ public partial class login_scene : Control
         string Password = PasswordNode.Text;
         try
         {
-            session = await client.AuthenticateEmailAsync(Email, Password, create: false);
+            ClientNode.Session = await ClientNode.Client.AuthenticateEmailAsync(Email, Password, create: false);
 
             bool appearOnline = true;
             int connectionTimeout = 30;
-            await socket.ConnectAsync(session, appearOnline, connectionTimeout);
+            await ClientNode.Socket.ConnectAsync(ClientNode.Session, appearOnline, connectionTimeout);
             GetTree().ChangeSceneToFile("res://scenes/dashboard.tscn");
         }
         catch (ApiResponseException e)

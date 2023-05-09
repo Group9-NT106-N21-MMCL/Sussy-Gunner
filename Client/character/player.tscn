@@ -1,7 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://x1ek7q727133"]
+[gd_scene load_steps=9 format=3 uid="uid://bo7tgpravy76l"]
 
+[ext_resource type="Script" path="res://character/Player.cs" id="1_7qyjg"]
 [ext_resource type="Texture2D" uid="uid://ptw2ucrqri6g" path="res://images/Player.png" id="1_40qti"]
-[ext_resource type="Script" path="res://character/player.cs" id="1_hb005"]
 [ext_resource type="Texture2D" uid="uid://l8ykakvcbi28" path="res://images/PlayerHand.png" id="3_vmjno"]
 
 [sub_resource type="Animation" id="Animation_pafxr"]
@@ -61,26 +61,28 @@ _data = {
 }
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lm8re"]
-radius = 22.05
-height = 56.36
+radius = 19.0
+height = 60.0
 
 [node name="Player" type="CharacterBody2D"]
 position = Vector2(564, 294)
 collision_mask = 7
-script = ExtResource("1_hb005")
+script = ExtResource("1_7qyjg")
 
 [node name="Character" type="Node2D" parent="."]
 
 [node name="Body" type="Sprite2D" parent="Character"]
-position = Vector2(1, 0)
 texture = ExtResource("1_40qti")
 hframes = 4
 vframes = 4
 
 [node name="Hand" type="Sprite2D" parent="Character"]
-position = Vector2(31, 4)
-scale = Vector2(0.825, 0.825)
+scale = Vector2(0.825, 0.7625)
 texture = ExtResource("3_vmjno")
+
+[node name="BulletPos" type="Marker2D" parent="Character/Hand"]
+position = Vector2(50, -6.5)
+scale = Vector2(1, 1)
 
 [node name="RunningAnimation" type="AnimationPlayer" parent="Character"]
 root_node = NodePath("../..")
@@ -89,7 +91,5 @@ libraries = {
 }
 
 [node name="Collision" type="CollisionShape2D" parent="."]
+position = Vector2(-2, -5)
 shape = SubResource("CapsuleShape2D_lm8re")
-
-[node name="Marker2D" type="Marker2D" parent="."]
-position = Vector2(42, 0)

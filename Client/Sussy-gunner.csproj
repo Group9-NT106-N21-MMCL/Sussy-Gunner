@@ -3,8 +3,10 @@
 		<TargetFramework>net6.0</TargetFramework>
 		<EnableDynamicLoading>true</EnableDynamicLoading>
 		<RootNamespace>Sussygunner</RootNamespace>
+		<Nullable>enable</Nullable>
 	</PropertyGroup>
 	<ItemGroup>
+		<PackageReference Include="Chickensoft.GoDotNet" Version="1.5.3" />
 		<PackageReference Include="NakamaClient" Version="3.7.0" />
 	</ItemGroup>
 </Project>

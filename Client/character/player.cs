@@ -1,127 +1,56 @@
 using Godot;
 using System;
+using System.Threading.Tasks;
 
-public partial class player : CharacterBody2D
+public partial class Player : CharacterBody2D
 {
-    public int Speed = 7;
-    private int ammoAmount = 10;
-    private Vector2 _velocity = new Vector2(), _left_offset = new Vector2(-80, 0);
-    Sprite2D body, hand;
-    Node2D character;
-    AnimationPlayer animationPlayer;
-    Marker2D marker;
-    PackedScene bulletScene;
-    Timer timer = new Timer();
-    bool isLeft = false;
-    public override void _Ready()
+    public const float Speed = 300.0f;
+    private bool isFlip = false;
+    private int ammoAmount = 20;
+    public override void _PhysicsProcess(double delta)
     {
-        character = (Node2D)GetNode("Character");
-        body = (Sprite2D)GetNode("Character/Body");
-        hand = (Sprite2D)GetNode("Character/Hand");
-        animationPlayer = (AnimationPlayer)GetNode("Character/RunningAnimation");
-        bulletScene = GD.Load<PackedScene>("res://scenes/bullet.tscn");
-        marker = (Marker2D)GetNode("Marker2D");
-    }
-    public void GetInput()
-    {
-        Vector2 direction = GetGlobalMousePosition();
-        direction = (direction - Position).Normalized();
-        Vector2 inv_direction = new Vector2(-direction.X, direction.Y).Normalized();
-        bool isMove = false;
-        // Detect up/down/left/right keystate and only move when pressed
-        _velocity = new Vector2();
+        var animationPlayer = GetNode<AnimationPlayer>("Character/RunningAnimation");
+        var body = GetNode<Sprite2D>("Character/Body");
+        var gun = GetNode<Sprite2D>("Character/Hand");
+        gun.LookAt(GetGlobalMousePosition());
 
-        if (Input.IsActionPressed("move_right"))
-        {
-            _velocity.X += 1;
-            isMove = true;
-        }
-
-        if (Input.IsActionPressed("move_left"))
-        {
-            _velocity.X -= 1;
-            isMove = true;
-        }
-        if (Input.IsActionPressed("move_down"))
-        {
-            _velocity.Y += 1;
-            isMove = true;
-        }
-        if (Input.IsActionPressed("move_up"))
-        {
-            _velocity.Y -= 1;
-            isMove = true;
-        }
-        _velocity = _velocity.Normalized() * Speed;
-
-        if (direction.X > 0)
-        {
-            character.Scale = new Vector2(1, 1);
-            //hand.Offset = Vector2.Zero;
-            hand.Position = new Vector2(_velocity.X, _velocity.Y);
-            isLeft = false;
-
-        }
-        // Look at the mouse position
-        else if (direction.X < 0)
-        {
-            character.Scale = new Vector2(-1, 1);
-            hand.Position = new Vector2(-_velocity.X, _velocity.Y);
-            isLeft = true;
-        }
-
-        if (!isMove) animationPlayer.Play("idle");
-        else animationPlayer.Play("running");
+        Vector2 inputDirection = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
 
         if (Input.IsActionPressed("reload") && ammoAmount == 0)
-            ammoAmount = 10; //Reload bullet
+            ammoAmount = 20; //Reload bullet
 
-        if (character.Scale.X < 0)
-        {
-            hand.Rotation = inv_direction.Angle();
-            if (hand.Rotation < -45)
-                hand.Rotation = -45;
-            else if (hand.Rotation > 45)
-                hand.Rotation = 45;
-        }
-        else
-        {
-            hand.Rotation = direction.Angle();
-            if (hand.Rotation < -45)
-                hand.Rotation = -45;
-            if (hand.Rotation > 45)
-                hand.Rotation = 45;
-        }
+        if (inputDirection.X != 0)
+            body.FlipH = inputDirection.X < 0;
+
+        gun.Position = body.Position;
+        gun.FlipV = body.FlipH;
+
+        if (inputDirection != Vector2.Zero)
+            animationPlayer.Play("running");
+        else animationPlayer.Play("idle");
+
+        Velocity = inputDirection * Speed;
+        GetParent().GetNode<Camera2D>("Camera2D").Position = Position;
+        MoveAndSlide();
     }
-
-    public override void _UnhandledInput(InputEvent @event)
+    public async Task shoot()
     {
-        if (@event is InputEventMouseButton eventMouse)
-        {
-            if (eventMouse.ButtonIndex == MouseButton.Left && eventMouse.Pressed)
-            {
-                if (ammoAmount > 0) shoot();
-            }
-        }
-    }
+        var bulletPos = GetNode<Marker2D>("Character/Hand/BulletPos");
+        var bulletScene = GD.Load<PackedScene>("res://scenes/bullet.tscn");
+        var _bullet = bulletScene.Instantiate<bullet>();
 
-    public void shoot()
-    {
-        Vector2 moveBack = new Vector2((float)40, (float)0);
-        var _bullet = (Node2D)bulletScene.Instantiate();
         _bullet.Rotation = (GetGlobalMousePosition() - GlobalPosition).Angle();
-        if (!isLeft)
-            _bullet.Position = marker.GlobalPosition;
-        else
-            _bullet.Position = marker.GlobalPosition - moveBack;
+        _bullet.Position = bulletPos.GlobalPosition;
         _bullet.Scale = new Vector2((float)0.5, (float)0.5);
         ammoAmount -= 1;
         GetParent().AddChild(_bullet);
     }
-
-    public override void _PhysicsProcess(double delta)
+    public override void _UnhandledInput(InputEvent @event)
     {
-        GetInput();
-        MoveAndCollide(_velocity, false, (float)0.8, true);
+        if (@event is InputEventMouseButton mouseEvent)
+        {
+            if (mouseEvent.ButtonIndex == MouseButton.Left && mouseEvent.Pressed && ammoAmount > 0)
+                Task.Run(async () => await shoot());
+        }
     }
 }
