@@ -81,8 +81,7 @@ scale = Vector2(0.825, 0.7625)
 texture = ExtResource("3_vmjno")
 
 [node name="BulletPos" type="Marker2D" parent="Character/Hand"]
-position = Vector2(50, -6.5)
-scale = Vector2(1, 1)
+position = Vector2(55, -6.5)
 
 [node name="RunningAnimation" type="AnimationPlayer" parent="Character"]
 root_node = NodePath("../..")
