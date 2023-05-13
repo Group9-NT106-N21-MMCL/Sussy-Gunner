@@ -4,10 +4,12 @@ using Nakama;
 public partial class ClientNode : Node
 {
     [Serializable]
-    public class PositionState
+    public class PlayerState
     {
-        public bool isDirection;
-        public float X, Y;
+        public bool isDirection = false;
+        public float PosX = 0, PosY = 0;
+        public float GunRoate = 0;
+        public bool GunFlip = false;
     }
     private const string Scheme = "http";
     private const string Host = "100.91.95.109";

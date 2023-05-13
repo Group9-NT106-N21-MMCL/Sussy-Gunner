@@ -38,14 +38,19 @@ public partial class map : Node2D
             {
                 case 0: //Get position
                     var stateJson = Encoding.UTF8.GetString(matchState.State);
-                    var state = JsonParser.FromJson<ClientNode.PositionState>(stateJson);
-                    var coordinate = new Vector2(state.X, state.Y);
+                    var state = JsonParser.FromJson<ClientNode.PlayerState>(stateJson);
+                    var coordinate = new Vector2(state.PosX, state.PosY);
 
                     var UserID = matchState.UserPresence.UserId;
                     var Username = matchState.UserPresence.Username;
 
                     if (players.ContainsKey(UserID) && state.isDirection)
-                        await players[UserID].Move(coordinate);
+                    {
+                        float GunRoate = state.GunRoate;
+                        bool GunFlip = state.GunFlip;
+                        await players[UserID].Move(coordinate, GunRoate, GunFlip);
+                    }
+
                     else if (!players.ContainsKey(UserID) && !state.isDirection)
                         await SpawPlayer(UserID, Username, coordinate);
                     break;
@@ -62,7 +67,7 @@ public partial class map : Node2D
         if (players.ContainsKey(ClientNode.Session.UserId))
         {
             var SelfPos = players[ClientNode.Session.UserId].Position;
-            var state = new ClientNode.PositionState { isDirection = false, X = SelfPos.X, Y = SelfPos.Y };
+            var state = new ClientNode.PlayerState { isDirection = false, PosX = SelfPos.X, PosY = SelfPos.Y };
 
             var opCode = 0; //Send position
             await ClientNode.Socket.SendMatchStateAsync(match.Id, opCode, JsonWriter.ToJson(state));
