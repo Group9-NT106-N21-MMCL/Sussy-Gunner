@@ -1,10 +1,16 @@
+using System;
 using Godot;
 using Nakama;
-
 public partial class ClientNode : Node
 {
+    [Serializable]
+    public class PositionState
+    {
+        public bool isDirection;
+        public float X, Y;
+    }
     private const string Scheme = "http";
-    private const string Host = "100.119.145.114";
+    private const string Host = "100.91.95.109";
     private const int Port = 7350;
     private const string ServerKey = "defaultkey";
     public IClient? Client;

@@ -2,9 +2,15 @@ using Godot;
 using System;
 using System.Threading.Tasks;
 using Chickensoft.GoDotNet;
+using Nakama;
+using Nakama.TinyJson;
+
 public partial class player : CharacterBody2D
 {
 	private ClientNode ClientNode => this.Autoload<ClientNode>();
+	private Vector2 inputDirection = Vector2.Zero;
+	private IMatch match;
+	public void SetMatch(IMatch X) => match = X;
 	public const float Speed = 300.0f;
 	private bool isFlip = false;
 	private int ammoAmount = 20;
@@ -17,7 +23,11 @@ public partial class player : CharacterBody2D
 			var gun = GetNode<Sprite2D>("Character/Hand");
 			gun.LookAt(GetGlobalMousePosition());
 
-			Vector2 inputDirection = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
+			inputDirection = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
+
+			var state = new ClientNode.PositionState { isDirection = true, X = inputDirection.X, Y = inputDirection.Y };
+			var opCode = 0; //Send position
+			Task.Run(async () => await ClientNode.Socket.SendMatchStateAsync(match.Id, opCode, JsonWriter.ToJson(state)));
 
 			if (Input.IsActionPressed("reload") && ammoAmount == 0)
 				ammoAmount = 20; //Reload bullet
@@ -36,7 +46,6 @@ public partial class player : CharacterBody2D
 			GetParent().GetNode<Camera2D>("Camera2D").Position = Position;
 			MoveAndSlide();
 		}
-
 	}
 	public async Task Shoot()
 	{
@@ -50,11 +59,15 @@ public partial class player : CharacterBody2D
 		ammoAmount -= 1;
 		GetParent().AddChild(_bullet);
 	}
-	public async Task Move(Vector2 positionState)
+
+	public async Task Move(Vector2 Direction)
 	{
-		Velocity = positionState * Speed;
-		GetNode<AnimationPlayer>("Character/RunningAnimation").Play("running");
-		MoveAndSlide();
+		var animationPlayer = GetNode<AnimationPlayer>("Character/RunningAnimation");
+		if (inputDirection != Vector2.Zero)
+			animationPlayer.Play("running");
+		else animationPlayer.Play("idle");
+		Velocity = inputDirection * Speed;
+		CallDeferred("MoveAndSlide");
 	}
 	public override void _UnhandledInput(InputEvent @event)
 	{
