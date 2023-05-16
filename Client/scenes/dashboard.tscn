@@ -1,10 +1,13 @@
-[gd_scene load_steps=6 format=3 uid="uid://clees2aaw8eoa"]
+[gd_scene load_steps=9 format=3 uid="uid://clees2aaw8eoa"]
 
 [ext_resource type="Texture2D" uid="uid://d1q62pygdrfd6" path="res://images/DashboardBackground.png" id="1_7wcbi"]
 [ext_resource type="Script" path="res://scripts/dashboard.cs" id="1_lhuj7"]
-[ext_resource type="Texture2D" uid="uid://bhbagvsxkdbuf" path="res://images/no_crew-sharedassets2.assets-22.png" id="2_0ynpq"]
 [ext_resource type="FontFile" uid="uid://cptihme2u2tow" path="res://fonts/In your face, joffrey!.ttf" id="3_pe3wd"]
 [ext_resource type="FontFile" uid="uid://dv3i8uafmag63" path="res://fonts/among-us-impostograph-regular-betterstudio.com/Impostograph-Regular.ttf" id="3_yr76k"]
+[ext_resource type="Texture2D" uid="uid://bicm30xdmlrrl" path="res://images/infoButton.png" id="5_d61j7"]
+[ext_resource type="Texture2D" uid="uid://c5bnc6difn6ae" path="res://images/infoButtonHover.png" id="6_0mttr"]
+[ext_resource type="BitMap" uid="uid://c08d41frho4qd" path="res://images/buttonMask.png" id="7_0o7o5"]
+[ext_resource type="PackedScene" uid="uid://dd3pgbwk5wgwy" path="res://scenes/user_info.tscn" id="8_sekyo"]
 
 [node name="Dashboard" type="Control"]
 layout_mode = 3
@@ -20,11 +23,6 @@ position = Vector2(573, 349)
 scale = Vector2(0.535774, 0.535774)
 texture = ExtResource("1_7wcbi")
 
-[node name="PlayerImg" type="Sprite2D" parent="."]
-position = Vector2(115, 72)
-scale = Vector2(0.252899, 0.252899)
-texture = ExtResource("2_0ynpq")
-
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 0
 offset_left = 25.0
@@ -35,14 +33,6 @@ theme_override_constants/margin_left = 20
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
-
-[node name="Username" type="Label" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "Username : t00m"
-
-[node name="Elo" type="Label" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "Ranking: ???"
 
 [node name="MarginContainer2" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -84,5 +74,24 @@ theme_override_fonts/font = ExtResource("3_pe3wd")
 theme_override_font_sizes/font_size = 70
 text = "Join Game"
 
+[node name="TextureButton" type="TextureButton" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture_normal = ExtResource("5_d61j7")
+texture_pressed = ExtResource("5_d61j7")
+texture_hover = ExtResource("6_0mttr")
+texture_click_mask = ExtResource("7_0o7o5")
+
+[node name="UserInfo" parent="TextureButton" instance=ExtResource("8_sekyo")]
+visible = false
+layout_mode = 1
+offset_left = -158.0
+offset_top = -110.0
+offset_right = -158.0
+offset_bottom = -110.0
+scale = Vector2(0.8, 0.8)
+
 [connection signal="pressed" from="MarginContainer2/VBoxContainer/CreateGameButton" to="." method="_on_create_game_button_pressed"]
 [connection signal="pressed" from="MarginContainer2/VBoxContainer/JoinGameButton" to="." method="_on_join_game_button_pressed"]
+[connection signal="pressed" from="TextureButton" to="." method="_on_texture_button_pressed"]

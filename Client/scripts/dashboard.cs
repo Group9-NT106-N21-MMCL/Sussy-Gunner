@@ -46,4 +46,10 @@ public partial class dashboard : Control
         }
         else GetTree().ChangeSceneToFile("res://scenes/map.tscn");
     }
+
+    private async void _on_texture_button_pressed()
+    {
+        var userInfo = GetNode<Control>("TextureButton/UserInfo");
+        userInfo.Visible = !userInfo.Visible;
+    }
 }
