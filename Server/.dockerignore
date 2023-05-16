@@ -1,0 +1,4 @@
+# flyctl launch added from .gitignore
+# Godot 4+ specific ignores
+**/.godot
+fly.toml

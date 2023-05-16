@@ -1,0 +1,44 @@
+# fly.toml app configuration file generated for sussy-gunner on 2023-05-16T16:35:03+07:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "sussy-gunner"
+primary_region = "sin"
+
+[[services]]
+  internal_port = 7351
+  protocol = "tcp"
+  auto_stop_machines = true
+  auto_start_machines = true
+  [[services.ports]]
+    handlers = ["http"]
+    port = 80
+    force_https = true  # optional
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = "443"
+
+[[services]]
+  internal_port = 7350
+  protocol = "tcp"
+  auto_stop_machines = true
+  auto_start_machines = true
+  [[services.ports]]
+    handlers = ["tls"]
+    port = "7350"
+
+[[services]]
+  internal_port = 7349
+  protocol = "tcp"
+  auto_stop_machines = true
+  auto_start_machines = true
+
+[mounts]
+  source = "sussy_gunner_data"
+  destination = "/nakama/data"
+
+[metrics]
+  port = 9091       # default for most prometheus clients
+  path = "/metrics" # default for most prometheus clients
+
