@@ -20,7 +20,7 @@ public partial class map : Node2D
         var _player = scene.Instantiate<player>();
         _player.Scale = new Vector2((float)0.5, (float)0.5);
         _player.Name = Username;
-        _player.GetNode<Area2D>("Area2D").Name = "Player_" + Username;
+        _player.GetNode<Area2D>("Area2D").Name = "Player_" + UserID;
         _player.Position = Pos;
         _player.SetMatch(match);
         AddChild(_player);
@@ -54,6 +54,15 @@ public partial class map : Node2D
 
                     else if (!players.ContainsKey(UserID) && !state.isDirection)
                         await SpawPlayer(UserID, Username, coordinate);
+                    break;
+                case 1: //Someone shot!
+                    var JsonShot = Encoding.UTF8.GetString(matchState.State);
+                    var UserIDShot = JsonParser.FromJson<String>(JsonShot);
+                    players[UserIDShot].DecHealth();
+                    break;
+                case 2:
+                    var UserIDShoot = matchState.UserPresence.UserId;
+                    await players[UserIDShoot].Shoot();
                     break;
                 default:
                     GD.Print("Unsupported op code");
