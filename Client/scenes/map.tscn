@@ -1,7 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://dx3btxtx6n24q"]
+[gd_scene load_steps=6 format=3 uid="uid://dx3btxtx6n24q"]
 
 [ext_resource type="Script" path="res://scripts/map.cs" id="1_rw77l"]
 [ext_resource type="Texture2D" uid="uid://j4gk2wxoeyq4" path="res://images/Map.png" id="3_rwxv8"]
+[ext_resource type="Texture2D" uid="uid://dbd2efkfjrrvp" path="res://images/quitButton.png" id="3_sx72i"]
+[ext_resource type="Texture2D" uid="uid://yq6v57u6pdkq" path="res://images/quitButtonHover.png" id="4_apof7"]
+[ext_resource type="Texture2D" uid="uid://d1bj8foxwuw36" path="res://images/messageBox.png" id="5_sfdlx"]
 
 [node name="Map" type="Node2D"]
 script = ExtResource("1_rw77l")
@@ -171,3 +174,47 @@ position_smoothing_speed = 10.0
 rotation_smoothing_enabled = true
 rotation_smoothing_speed = 10.0
 editor_draw_limits = true
+
+[node name="Quit" type="CanvasLayer" parent="."]
+
+[node name="QuitButton" type="TextureButton" parent="Quit"]
+top_level = true
+offset_right = 100.0
+offset_bottom = 100.0
+texture_normal = ExtResource("3_sx72i")
+texture_hover = ExtResource("4_apof7")
+
+[node name="QuitComponent" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="MessageBox" type="Sprite2D" parent="QuitComponent"]
+position = Vector2(539, 304)
+texture = ExtResource("5_sfdlx")
+
+[node name="QuitMessage" type="MarginContainer" parent="QuitComponent"]
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -104.0
+offset_right = 37.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="QuitComponent/QuitMessage"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+alignment = 1
+
+[node name="YesButton" type="Button" parent="QuitComponent/QuitMessage/HBoxContainer"]
+layout_mode = 2
+text = "YES"
+
+[node name="NoButton" type="Button" parent="QuitComponent/QuitMessage/HBoxContainer"]
+layout_mode = 2
+text = "NO"
+
+[connection signal="pressed" from="Quit/QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="QuitComponent/QuitMessage/HBoxContainer/YesButton" to="." method="_on_yes_button_pressed"]
+[connection signal="pressed" from="QuitComponent/QuitMessage/HBoxContainer/NoButton" to="." method="_on_no_button_pressed"]

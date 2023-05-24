@@ -74,4 +74,21 @@ public partial class map : Node2D
             await ClientNode.Socket.SendMatchStateAsync(match.Id, opCode, JsonWriter.ToJson(state));
         }
     }
+
+    public void _on_quit_button_pressed()
+    {
+        var quit = GetNode<CanvasLayer>("QuitComponent");
+        quit.Visible = !quit.Visible;
+    }
+
+    public void _on_yes_button_pressed()
+    {
+        GetTree().ChangeSceneToFile("res://scenes/dashboard.tscn");
+    }
+
+    public void _on_no_button_pressed()
+    {
+        var quit = GetNode<CanvasLayer>("QuitComponent");
+        quit.Visible = false;
+    }
 }
