@@ -13,7 +13,10 @@ public partial class dashboard : Control
     public override void _Ready()
     {
         var Username = ClientNode.Session.Username;
-        GetNode<Label>("MarginContainer/VBoxContainer/Username").Text = "Username: " + Username;
+        var ID = ClientNode.Session.UserId;
+        var UserInforNode = GetNode<Control>("TextureButton/UserInfo");
+        UserInforNode.GetNode<LineEdit>("ID").Text = ID;
+        UserInforNode.GetNode<LineEdit>("Username").Text = Username;
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.

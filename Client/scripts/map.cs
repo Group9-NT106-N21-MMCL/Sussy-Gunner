@@ -20,6 +20,7 @@ public partial class map : Node2D
         var _player = scene.Instantiate<player>();
         _player.Scale = new Vector2((float)0.5, (float)0.5);
         _player.Name = Username;
+        _player.GetNode<Area2D>("Area2D").Name = "Player_" + Username;
         _player.Position = Pos;
         _player.SetMatch(match);
         AddChild(_player);

@@ -11,8 +11,8 @@ public partial class ClientNode : Node
         public float GunRoate = 0;
         public bool GunFlip = false;
     }
-    private const string Scheme = "http";
-    private const string Host = "100.91.95.109";
+    private const string Scheme = "https";
+    private const string Host = "sussy-gunner.fly.dev";
     private const int Port = 7350;
     private const string ServerKey = "defaultkey";
     public IClient? Client;

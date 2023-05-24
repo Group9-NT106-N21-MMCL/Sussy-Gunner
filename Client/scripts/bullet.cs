@@ -1,5 +1,7 @@
 using Godot;
+using Nakama;
 using System;
+using System.Threading.Tasks;
 
 public partial class bullet : CharacterBody2D
 {
@@ -7,6 +9,8 @@ public partial class bullet : CharacterBody2D
     float distanceTravelled = 0;
     public float damage = 20;
     float speed = 1200;
+    private IMatch match;
+    public void SetMatch(IMatch X) => match = X;
     public override void _Process(double delta)
     {
         float moveAmount = (float)(speed * delta);
@@ -20,6 +24,13 @@ public partial class bullet : CharacterBody2D
     {
         if (area.Name == "WallArea")
             QueueFree();
+        else (area.Name.ToString().StartsWith("Player_"))
+        {
+            QueueFree();
+            var opCode = 1; //Detect who has been shot
+            var Username = area.Name.ToString().Substring(7);
+            Task.Run(async () => await ClientNode.Socket.SendMatchStateAsync(match.Id, opCode, JsonWriter.ToJson(Username)));
+        }
     }
 }
 
