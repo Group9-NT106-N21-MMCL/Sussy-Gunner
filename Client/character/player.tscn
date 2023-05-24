@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://bo7tgpravy76l"]
+[gd_scene load_steps=11 format=3 uid="uid://bo7tgpravy76l"]
 
 [ext_resource type="Script" path="res://character/player.cs" id="1_7qyjg"]
 [ext_resource type="Texture2D" uid="uid://ptw2ucrqri6g" path="res://images/Player.png" id="1_40qti"]
 [ext_resource type="Texture2D" uid="uid://l8ykakvcbi28" path="res://images/PlayerHand.png" id="3_vmjno"]
+[ext_resource type="Texture2D" uid="uid://wxtwsmumadw" path="res://images/death.png" id="4_2n3hu"]
 
 [sub_resource type="Animation" id="Animation_pafxr"]
 length = 0.001
@@ -13,6 +14,18 @@ tracks/0/path = NodePath("Character/Body:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Character/DeathBody:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -53,9 +66,26 @@ tracks/0/keys = {
 "values": [0, 1, 2, 3]
 }
 
+[sub_resource type="Animation" id="Animation_50h5q"]
+resource_name = "death"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Character/DeathBody:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_4lqgh"]
 _data = {
 "RESET": SubResource("Animation_pafxr"),
+"death": SubResource("Animation_50h5q"),
 "idle": SubResource("Animation_vooox"),
 "running": SubResource("Animation_nkvu4")
 }
@@ -88,6 +118,13 @@ root_node = NodePath("../..")
 libraries = {
 "": SubResource("AnimationLibrary_4lqgh")
 }
+
+[node name="DeathBody" type="Sprite2D" parent="Character"]
+visible = false
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4_2n3hu")
+hframes = 2
+vframes = 2
 
 [node name="Collision" type="CollisionShape2D" parent="."]
 position = Vector2(-2, 0)
