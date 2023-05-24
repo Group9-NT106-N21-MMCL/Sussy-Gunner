@@ -32,6 +32,23 @@ tracks/1/keys = {
 "values": [0]
 }
 
+[sub_resource type="Animation" id="Animation_50h5q"]
+resource_name = "death"
+length = 0.5
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Character/DeathBody:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = false
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
 [sub_resource type="Animation" id="Animation_vooox"]
 resource_name = "idle"
 length = 0.1
@@ -57,22 +74,6 @@ tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/path = NodePath("Character/Body:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3]
-}
-
-[sub_resource type="Animation" id="Animation_50h5q"]
-resource_name = "death"
-length = 0.3
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Character/DeathBody:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -113,7 +114,7 @@ texture = ExtResource("3_vmjno")
 [node name="BulletPos" type="Marker2D" parent="Character/Hand"]
 position = Vector2(55, -6.5)
 
-[node name="RunningAnimation" type="AnimationPlayer" parent="Character"]
+[node name="Animation" type="AnimationPlayer" parent="Character"]
 root_node = NodePath("../..")
 libraries = {
 "": SubResource("AnimationLibrary_4lqgh")
@@ -128,7 +129,7 @@ vframes = 2
 
 [node name="Collision" type="CollisionShape2D" parent="."]
 position = Vector2(-2, 0)
-scale = Vector2(0.9, 0.9)
+scale = Vector2(0.8, 0.8)
 shape = SubResource("CapsuleShape2D_lm8re")
 
 [node name="Area2D" type="Area2D" parent="."]

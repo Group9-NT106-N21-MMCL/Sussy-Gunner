@@ -1,10 +1,12 @@
 using Godot;
 using System;
 using System.Threading.Tasks;
+using Chickensoft.GoDotNet;
+using Nakama;
+using Nakama.TinyJson;
 
 public partial class bullet : CharacterBody2D
 {
-    private ClientNode ClientNode => this.Autoload<ClientNode>();
     private ClientNode ClientNode => this.Autoload<ClientNode>();
     float maxRange = 1000;
     float distanceTravelled = 0;
@@ -26,13 +28,12 @@ public partial class bullet : CharacterBody2D
         if (area.Name == "WallArea")
             QueueFree();
         else if (area.Name.ToString().StartsWith("Player_"))
-        else if (area.Name.ToString().StartsWith("Player_"))
-                {
-                    QueueFree();
-                    var opCode = 1; //Detect who has been shot
-                    var UserID = area.Name.ToString().Substring(7);
-                    Task.Run(async () => await ClientNode.Socket.SendMatchStateAsync(match.Id, opCode, JsonWriter.ToJson(UserID)));
-                }
+        {
+            QueueFree();
+            var opCode = 1; //Detect who has been shot
+            var UserID = area.Name.ToString().Substring(7);
+            Task.Run(async () => await ClientNode.Socket.SendMatchStateAsync(match.Id, opCode, JsonWriter.ToJson(UserID)));
+        }
     }
 }
 
