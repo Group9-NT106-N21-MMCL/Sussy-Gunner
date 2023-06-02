@@ -12,7 +12,7 @@ public partial class ClientNode : Node
 		public bool GunFlip = false;
 	}
 	private const string Scheme = "https";
-	private const string Host = "dry-water-5646.fly.dev";
+	private const string Host = "sussy-gunner.fly.dev";
 	private const int Port = 7350;
 	private const string ServerKey = "defaultkey";
 	public IClient? Client;

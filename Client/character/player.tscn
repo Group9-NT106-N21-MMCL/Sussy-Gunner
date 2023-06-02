@@ -34,8 +34,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_50h5q"]
 resource_name = "death"
-length = 0.5
-loop_mode = 2
+length = 0.4
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -128,13 +127,15 @@ hframes = 2
 vframes = 2
 
 [node name="Collision" type="CollisionShape2D" parent="."]
-position = Vector2(-2, 0)
+position = Vector2(-2, -1)
 scale = Vector2(0.8, 0.8)
 shape = SubResource("CapsuleShape2D_lm8re")
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="Area" type="Area2D" parent="."]
+position = Vector2(-1, -1)
+scale = Vector2(0.75, 0.75)
 
-[node name="AreaShape" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(-2, 0)
+[node name="AreaShape" type="CollisionShape2D" parent="Area"]
+position = Vector2(-1, -1)
 scale = Vector2(1.3, 1.3)
 shape = SubResource("CapsuleShape2D_lm8re")

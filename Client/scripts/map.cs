@@ -20,7 +20,7 @@ public partial class map : Node2D
         var _player = scene.Instantiate<player>();
         _player.Scale = new Vector2((float)0.5, (float)0.5);
         _player.Name = Username;
-        _player.GetNode<Area2D>("Area2D").Name = "Player_" + UserID;
+        _player.GetNode<Area2D>("Area").Name = "Player_" + UserID;
         _player.Position = Pos;
         _player.SetMatch(match);
         AddChild(_player);
@@ -35,6 +35,8 @@ public partial class map : Node2D
 
         ClientNode.Socket.ReceivedMatchState += async matchState =>
         {
+            var UserID = matchState.UserPresence.UserId;
+            var Username = matchState.UserPresence.Username;
             switch (matchState.OpCode)
             {
                 case 0: //Get position
@@ -42,17 +44,17 @@ public partial class map : Node2D
                     var state = JsonParser.FromJson<ClientNode.PlayerState>(stateJson);
                     var coordinate = new Vector2(state.PosX, state.PosY);
 
-                    var UserID = matchState.UserPresence.UserId;
-                    var Username = matchState.UserPresence.Username;
-
-                    if (players.ContainsKey(UserID) && state.isDirection)
+                    if (players.ContainsKey(UserID))
                     {
-                        float GunRoate = state.GunRoate;
-                        bool GunFlip = state.GunFlip;
-                        await players[UserID].Move(coordinate, GunRoate, GunFlip);
+                        if (state.isDirection)
+                        {
+                            float GunRoate = state.GunRoate;
+                            bool GunFlip = state.GunFlip;
+                            await players[UserID].Move(coordinate, GunRoate, GunFlip, UserID);
+                        }
+                        else players[UserID].Position = coordinate;
                     }
-
-                    else if (!players.ContainsKey(UserID) && !state.isDirection)
+                    else
                         await SpawPlayer(UserID, Username, coordinate);
                     break;
                 case 1: //Someone shot!
@@ -61,9 +63,26 @@ public partial class map : Node2D
                     players[UserIDShot].DecHealth();
                     break;
                 case 2:
-                    var UserIDShoot = matchState.UserPresence.UserId;
-                    await players[UserIDShoot].Shoot();
+                    await players[UserID].Shoot();
                     break;
+                case 3:
+                    var LiveOrDeadData = Encoding.UTF8.GetString(matchState.State);
+                    var LiveOrDead = JsonParser.FromJson<String>(LiveOrDeadData);
+
+                    if (LiveOrDead == "Dead!")
+                    {
+                        await players[UserID].DeadOrLive(UserID);
+                        players[UserID].SetHealth(0);
+                    }
+
+                    else if (LiveOrDead == "Live!")
+                    {
+                        await players[UserID].DeadOrLive(UserID, true);
+                        players[UserID].SetHealth(10);
+                    }
+
+                    break;
+
                 default:
                     GD.Print("Unsupported op code");
                     break;
@@ -90,8 +109,9 @@ public partial class map : Node2D
         quit.Visible = !quit.Visible;
     }
 
-    public void _on_yes_button_pressed()
+    public async void _on_yes_button_pressed()
     {
+        await ClientNode.Socket.LeaveMatchAsync(match.Id);
         GetTree().ChangeSceneToFile("res://scenes/dashboard.tscn");
     }
 
