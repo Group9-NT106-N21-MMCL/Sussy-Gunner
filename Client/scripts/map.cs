@@ -100,4 +100,10 @@ public partial class map : Node2D
         var quit = GetNode<CanvasLayer>("QuitComponent");
         quit.Visible = false;
     }
+
+    private async void _on_chat_button_pressed()
+    {
+        var ChatBox = GetNode<Control>("Quit/ChatButton/Chat_Box");
+        ChatBox.Visible = !ChatBox.Visible;
+    }
 }

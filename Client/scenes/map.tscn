@@ -1,10 +1,14 @@
-[gd_scene load_steps=6 format=3 uid="uid://dx3btxtx6n24q"]
+[gd_scene load_steps=10 format=3 uid="uid://dx3btxtx6n24q"]
 
 [ext_resource type="Script" path="res://scripts/map.cs" id="1_rw77l"]
 [ext_resource type="Texture2D" uid="uid://j4gk2wxoeyq4" path="res://images/Map.png" id="3_rwxv8"]
 [ext_resource type="Texture2D" uid="uid://dbd2efkfjrrvp" path="res://images/quitButton.png" id="3_sx72i"]
 [ext_resource type="Texture2D" uid="uid://yq6v57u6pdkq" path="res://images/quitButtonHover.png" id="4_apof7"]
 [ext_resource type="Texture2D" uid="uid://d1bj8foxwuw36" path="res://images/messageBox.png" id="5_sfdlx"]
+[ext_resource type="Texture2D" uid="uid://cmpmo5tnmdq3x" path="res://images/chatButton.png" id="6_wvpvd"]
+[ext_resource type="Texture2D" uid="uid://cgblqnfgtgsfo" path="res://images/chatButtonHover.png" id="7_xw7cf"]
+[ext_resource type="BitMap" uid="uid://c08d41frho4qd" path="res://images/buttonMask.png" id="8_r2it4"]
+[ext_resource type="PackedScene" uid="uid://bgb155frqxjta" path="res://scenes/Chat_Box.tscn" id="9_rqbjt"]
 
 [node name="Map" type="Node2D"]
 script = ExtResource("1_rw77l")
@@ -184,6 +188,24 @@ offset_bottom = 100.0
 texture_normal = ExtResource("3_sx72i")
 texture_hover = ExtResource("4_apof7")
 
+[node name="ChatButton" type="TextureButton" parent="Quit"]
+offset_left = 84.0
+offset_top = 2.0
+offset_right = 184.0
+offset_bottom = 102.0
+texture_normal = ExtResource("6_wvpvd")
+texture_pressed = ExtResource("6_wvpvd")
+texture_hover = ExtResource("7_xw7cf")
+texture_click_mask = ExtResource("8_r2it4")
+
+[node name="Chat_Box" parent="Quit/ChatButton" instance=ExtResource("9_rqbjt")]
+visible = false
+layout_mode = 1
+offset_left = -73.0
+offset_top = 228.0
+offset_right = -173.0
+offset_bottom = 128.0
+
 [node name="QuitComponent" type="CanvasLayer" parent="."]
 visible = false
 
@@ -216,5 +238,6 @@ layout_mode = 2
 text = "NO"
 
 [connection signal="pressed" from="Quit/QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="Quit/ChatButton" to="." method="_on_chat_button_pressed"]
 [connection signal="pressed" from="QuitComponent/QuitMessage/HBoxContainer/YesButton" to="." method="_on_yes_button_pressed"]
 [connection signal="pressed" from="QuitComponent/QuitMessage/HBoxContainer/NoButton" to="." method="_on_no_button_pressed"]

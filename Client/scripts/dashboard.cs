@@ -55,4 +55,5 @@ public partial class dashboard : Control
         var userInfo = GetNode<Control>("TextureButton/UserInfo");
         userInfo.Visible = !userInfo.Visible;
     }
+
 }
