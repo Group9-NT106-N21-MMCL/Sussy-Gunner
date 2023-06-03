@@ -22,6 +22,8 @@ public partial class player : CharacterBody2D
 	public void DecHealth() => health -= 2;
 	public void SetHealth(int X) => health = X;
 	public void SetMatch(IMatch X) => match = X;
+	public void SetGunRotate(float X) => gun.Rotation = X;
+	public void SetFlip(bool Flip) => gun.FlipV = body.FlipH = Flip;
 	private void LetDead() => GetNode<AnimationPlayer>("Character/Animation").Play("death");
 	private void LetLive() => GetNode<AnimationPlayer>("Character/Animation").Play("idle");
 	private void LetMove()
@@ -96,7 +98,7 @@ public partial class player : CharacterBody2D
 					{
 						SendIdleState = true;
 						var opCode = 0; //Send position
-						var state = new ClientNode.PlayerState { isDirection = false, PosX = Position.X, PosY = Position.Y };
+						var state = new ClientNode.PlayerState { isDirection = false, PosX = Position.X, PosY = Position.Y, GunRoate = gun.Rotation, GunFlip = gun.FlipV };
 						Task.Run(async () => await ClientNode.Socket.SendMatchStateAsync(match.Id, opCode, JsonWriter.ToJson(state)));
 					}
 				}
