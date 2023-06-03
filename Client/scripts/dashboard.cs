@@ -1,5 +1,5 @@
 using Godot;
-using System;
+using System.Threading.Tasks;
 using Nakama;
 using System.Linq;
 using Chickensoft.GoDotNet;

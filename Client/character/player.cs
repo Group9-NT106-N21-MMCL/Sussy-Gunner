@@ -116,7 +116,8 @@ public partial class player : CharacterBody2D
 					Task.Run(async () => await Shoot());
 
 					var opCode = 2;
-					Task.Run(async () => await ClientNode.Socket.SendMatchStateAsync(match.Id, opCode, JsonWriter.ToJson(gun.Rotation)));
+					var state = new ClientNode.PlayerState { GunRoate = gun.Rotation, GunFlip = gun.FlipV };
+					Task.Run(async () => await ClientNode.Socket.SendMatchStateAsync(match.Id, opCode, JsonWriter.ToJson(state)));
 				}
 			}
 		}
