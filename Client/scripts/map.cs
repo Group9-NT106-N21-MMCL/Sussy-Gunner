@@ -9,7 +9,6 @@ using System.Text;
 
 public partial class map : Node2D
 {
-
     private IMatch match = dashboard.GetMatch();
     private ClientNode ClientNode => this.Autoload<ClientNode>();
     private Dictionary<string, player> players = new Dictionary<string, player>();
@@ -26,12 +25,23 @@ public partial class map : Node2D
         AddChild(_player);
         players.Add(UserID, _player);
     }
+    public async Task RemovePlayer(string UserID, string Username)
+    {
+        var _player = GetNode<CharacterBody2D>(Username);
+        _player.QueueFree();
+        players.Remove(UserID);
+    }
     // Called when the node enters the scene tree for the first time.
     public override async void _Ready()
     {
         var SelfID = ClientNode.Session.UserId;
         var SelfName = ClientNode.Session.Username;
-        await SpawPlayer(SelfID, SelfName, new Vector2(0.0f, 0.0f));
+        var SelfPos = new Vector2(0.0f, 0.0f);
+
+        await SpawPlayer(SelfID, SelfName, SelfPos);
+        var opCode = 4; //Send position to another player to spawn me
+        var state = new ClientNode.PlayerState { PosX = SelfPos.X, PosY = SelfPos.Y };
+        Task.Run(async () => await ClientNode.Socket.SendMatchStateAsync(match.Id, opCode, JsonWriter.ToJson(state)));
 
         ClientNode.Socket.ReceivedMatchState += async matchState =>
         {
@@ -39,33 +49,36 @@ public partial class map : Node2D
             var Username = matchState.UserPresence.Username;
             switch (matchState.OpCode)
             {
-                case 0: //Get position
+                case 0: //Move player
                     var stateJson = Encoding.UTF8.GetString(matchState.State);
                     var state = JsonParser.FromJson<ClientNode.PlayerState>(stateJson);
-                    var coordinate = new Vector2(state.PosX, state.PosY);
-
+                    var direction = new Vector2(state.PosX, state.PosY);
                     if (players.ContainsKey(UserID))
                     {
                         if (state.isDirection)
                         {
                             float GunRoate = state.GunRoate;
                             bool GunFlip = state.GunFlip;
-                            await players[UserID].Move(coordinate, GunRoate, GunFlip, UserID);
+                            await players[UserID].Move(direction, GunRoate, GunFlip, UserID);
                         }
-                        else players[UserID].Position = coordinate;
+                        else
+                        {
+                            players[UserID].Stop();
+                            players[UserID].Position = direction;
+                        }
                     }
-                    else
-                        await SpawPlayer(UserID, Username, coordinate);
                     break;
-                case 1: //Someone shot!
+                case 1: //Someone has been shot!
                     var JsonShot = Encoding.UTF8.GetString(matchState.State);
                     var UserIDShot = JsonParser.FromJson<String>(JsonShot);
                     players[UserIDShot].DecHealth();
                     break;
-                case 2:
-                    await players[UserID].Shoot();
+                case 2: //Someone is shooting
+                    var JsonRoation = Encoding.UTF8.GetString(matchState.State);
+                    float? Rotation = JsonParser.FromJson<float>(JsonRoation);
+                    await players[UserID].Shoot(Rotation);
                     break;
-                case 3:
+                case 3: //Someone dead or still alive
                     var LiveOrDeadData = Encoding.UTF8.GetString(matchState.State);
                     var LiveOrDead = JsonParser.FromJson<String>(LiveOrDeadData);
 
@@ -80,9 +93,19 @@ public partial class map : Node2D
                         await players[UserID].DeadOrLive(UserID, true);
                         players[UserID].SetHealth(10);
                     }
-
                     break;
-
+                case 4: //Spawn player
+                    var PosJson = Encoding.UTF8.GetString(matchState.State);
+                    var PosState = JsonParser.FromJson<ClientNode.PlayerState>(PosJson);
+                    var Pos = new Vector2(PosState.PosX, PosState.PosY);
+                    if (!players.ContainsKey(UserID))
+                    {
+                        await SpawPlayer(UserID, Username, Pos);
+                        var opCode = 4; //Send position to another player to spawn me
+                        var PlayerState = new ClientNode.PlayerState { PosX = players[SelfID].Position.X, PosY = players[SelfID].Position.Y };
+                        Task.Run(async () => await ClientNode.Socket.SendMatchStateAsync(match.Id, opCode, JsonWriter.ToJson(PlayerState)));
+                    }
+                    break;
                 default:
                     GD.Print("Unsupported op code");
                     break;
@@ -91,17 +114,7 @@ public partial class map : Node2D
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
-    public override async void _Process(double delta)
-    {
-        if (players.ContainsKey(ClientNode.Session.UserId))
-        {
-            var SelfPos = players[ClientNode.Session.UserId].Position;
-            var state = new ClientNode.PlayerState { isDirection = false, PosX = SelfPos.X, PosY = SelfPos.Y };
-
-            var opCode = 0; //Send position
-            await ClientNode.Socket.SendMatchStateAsync(match.Id, opCode, JsonWriter.ToJson(state));
-        }
-    }
+    public override async void _Process(double delta) { }
 
     public void _on_quit_button_pressed()
     {
