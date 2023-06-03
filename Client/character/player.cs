@@ -31,6 +31,8 @@ public partial class player : CharacterBody2D
 		GetNode<AnimationPlayer>("Character/Animation").Play("running");
 		MoveAndSlide();
 	}
+	private void Add_Child(bullet X) => GetParent().AddChild(X);
+
 	public override void _Ready()
 	{
 		animationPlayer = GetNode<AnimationPlayer>("Character/Animation");
@@ -133,7 +135,8 @@ public partial class player : CharacterBody2D
 		_bullet.Scale = new Vector2((float)0.5, (float)0.5);
 		_bullet.SetMatch(match);
 		ammoAmount -= 1;
-		GetParent().AddChild(_bullet);
+
+		CallDeferred("Add_Child", _bullet);
 	}
 	public async Task Move(Vector2 Direction, float GunRoate, bool GunFlip, string UserID)
 	{
