@@ -1,44 +1,94 @@
-# fly.toml app configuration file generated for sussy-gunner on 2023-05-16T16:35:03+07:00
-#
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
-#
+# See https://heroiclabs.com/docs/nakama/getting-started/configuration/#server-ports for Nakama server ports.
 
 app = "sussy-gunner"
 primary_region = "sin"
+kill_signal = "SIGINT"
+kill_timeout = "5s"
 
-[[services]]
-  internal_port = 7351
-  protocol = "tcp"
-  auto_stop_machines = true
-  auto_start_machines = true
-  [[services.ports]]
-    handlers = ["http"]
-    port = 80
-    force_https = true  # optional
-  [[services.ports]]
-    handlers = ["tls", "http"]
-    port = "443"
+[experimental]
+  auto_rollback = true
 
-[[services]]
-  internal_port = 7350
-  protocol = "tcp"
-  auto_stop_machines = true
-  auto_start_machines = true
-  [[services.ports]]
-    handlers = ["tls"]
-    port = "7350"
+[build]
+  dockerfile = "Dockerfile"
 
-[[services]]
-  internal_port = 7349
-  protocol = "tcp"
-  auto_stop_machines = true
-  auto_start_machines = true
+[env]
+  PRIMARY_REGION = "sin"
 
-[mounts]
-  source = "sussy_gunner_data"
+[[mounts]]
+  source = "nakama"
   destination = "/nakama/data"
+  processes = ["app"]
 
+# Admin dashboard
+[[services]]
+  protocol = "tcp"
+  internal_port = 7351
+  min_machines_running = 0
+  processes = ["app"]
+
+  [[services.ports]]
+    port = 80
+    handlers = ["http"]
+    force_https = true
+
+  [[services.ports]]
+    port = 443
+    handlers = ["tls", "http"]
+  [services.concurrency]
+    type = "connections"
+    hard_limit = 25
+    soft_limit = 20
+
+  [[services.http_checks]]
+    interval = "10s"
+    timeout = "2s"
+    grace_period = "5s"
+    restart_limit = 0
+    method = "get"
+    path = "/"
+    protocol = "http"
+
+# gRPC API endpoint
+[[services]]
+  protocol = "tcp"
+  internal_port = 7349
+  min_machines_running = 0
+  processes = ["app"]
+
+  [[services.ports]]
+    port = 7349
+  [services.concurrency]
+    type = "connections"
+    hard_limit = 25
+    soft_limit = 20
+
+# HTTP API endpoint
+[[services]]
+  protocol = "tcp"
+  internal_port = 7350
+  min_machines_running = 0
+  processes = ["app"]
+
+  [[services.ports]]
+    port = 7350
+    handlers = ["http"]
+  [services.concurrency]
+    type = "connections"
+    hard_limit = 25
+    soft_limit = 20
+  [[services.http_checks]]
+    interval = "10s"
+    timeout = "2s"
+    grace_period = "5s"
+    restart_limit = 0
+    method = "get"
+    path = "/"
+    tls_skip_verify = true
+    protocol = "http"
+
+# Prometheus / Grafana
 [metrics]
-  port = 9091       # default for most prometheus clients
-  path = "/metrics" # default for most prometheus clients
+  port = 9091
+  path = "/metrics"
 
