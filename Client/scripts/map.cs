@@ -27,8 +27,9 @@ public partial class map : Node2D
     }
     public async Task RemovePlayer(string UserID, string Username)
     {
-        var _player = GetNode<CharacterBody2D>(Username);
-        _player.QueueFree();
+        var _player = GetNode<player>(Username);
+        RemoveChild(_player);
+        _player.Free();
         players.Remove(UserID);
     }
     // Called when the node enters the scene tree for the first time.
@@ -106,6 +107,9 @@ public partial class map : Node2D
                         Task.Run(async () => await ClientNode.Socket.SendMatchStateAsync(match.Id, opCode, JsonWriter.ToJson(PlayerState)));
                     }
                     break;
+                case 5: //Someone left
+                    await RemovePlayer(UserID, Username);
+                    break;
                 default:
                     GD.Print("Unsupported op code");
                     break;
@@ -124,6 +128,9 @@ public partial class map : Node2D
 
     public async void _on_yes_button_pressed()
     {
+        players.Clear();
+        var opCode = 5;
+        await ClientNode.Socket.SendMatchStateAsync(match.Id, opCode, JsonWriter.ToJson("Left!"));
         await ClientNode.Socket.LeaveMatchAsync(match.Id);
         GetTree().ChangeSceneToFile("res://scenes/dashboard.tscn");
     }
@@ -131,6 +138,6 @@ public partial class map : Node2D
     public void _on_no_button_pressed()
     {
         var quit = GetNode<CanvasLayer>("QuitComponent");
-        quit.Visible = false;
+        quit.Visible = !quit.Visible;
     }
 }
