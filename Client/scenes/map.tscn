@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://cmpmo5tnmdq3x" path="res://images/chatButton.png" id="6_wvpvd"]
 [ext_resource type="Texture2D" uid="uid://cgblqnfgtgsfo" path="res://images/chatButtonHover.png" id="7_xw7cf"]
 [ext_resource type="BitMap" uid="uid://c08d41frho4qd" path="res://images/buttonMask.png" id="8_r2it4"]
-[ext_resource type="PackedScene" uid="uid://bgb155frqxjta" path="res://scenes/Chat_Box.tscn" id="9_rqbjt"]
+[ext_resource type="PackedScene" uid="uid://cfg4kkbuux104" path="res://scenes/Chat_Box.tscn" id="9_rqbjt"]
 
 [node name="Map" type="Node2D"]
 script = ExtResource("1_rw77l")

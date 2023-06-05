@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Nakama;
 using System.Linq;
 using Chickensoft.GoDotNet;
+using Nakama.TinyJson;
 
 public partial class dashboard : Control
 {
@@ -31,6 +32,8 @@ public partial class dashboard : Control
         else //Room exist
         {
             await ClientNode.Socket.LeaveMatchAsync(match.Id);
+            var opCode = 5;
+            await ClientNode.Socket.SendMatchStateAsync(match.Id, opCode, JsonWriter.ToJson("Left!"));
             var Red = new Godot.Color("#FF0000");
             GetNode<LineEdit>("MarginContainer2/VBoxContainer/RoomName").Set("theme_override_colors/font_color", Red);
         }

@@ -1,5 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://bgb155frqxjta"]
+[gd_scene load_steps=3 format=3 uid="uid://cfg4kkbuux104"]
 
+[ext_resource type="Script" path="res://scripts/Chat_Box.cs" id="1_b0tb4"]
 [ext_resource type="FontFile" uid="uid://cptihme2u2tow" path="res://fonts/In your face, joffrey!.ttf" id="1_y45w0"]
 
 [node name="Chat_Box" type="Control"]
@@ -11,6 +12,7 @@ offset_right = -879.0
 offset_bottom = -242.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_b0tb4")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 1
@@ -20,7 +22,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="LineEdit" type="LineEdit" parent="."]
+[node name="TextBox" type="LineEdit" parent="."]
 layout_mode = 0
 offset_left = 20.0
 offset_top = 313.0
@@ -30,12 +32,13 @@ theme_override_fonts/font = ExtResource("1_y45w0")
 theme_override_font_sizes/font_size = 30
 placeholder_text = "Enter message "
 
-[node name="ItemList" type="ItemList" parent="."]
+[node name="ChatFrame" type="ItemList" parent="."]
 layout_mode = 0
 offset_left = 18.0
 offset_top = 51.0
 offset_right = 256.0
 offset_bottom = 304.0
+theme_override_fonts/font = ExtResource("1_y45w0")
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 0
@@ -54,3 +57,5 @@ offset_top = 364.0
 offset_right = 189.0
 offset_bottom = 395.0
 text = "SEND"
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

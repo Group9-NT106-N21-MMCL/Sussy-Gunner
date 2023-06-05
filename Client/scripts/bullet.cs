@@ -25,15 +25,8 @@ public partial class bullet : CharacterBody2D
 
 	public void _on_area_2d_area_entered(Area2D area)
 	{
-		if (area.Name == "WallArea")
+		if (area.Name == "WallArea" || area.Name == "Area")
 			QueueFree();
-		else if (area.Name.ToString().StartsWith("Player_"))
-		{
-			QueueFree();
-			var opCode = 1; //Detect who has been shot
-			var UserID = area.Name.ToString().Substring(7);
-			Task.Run(async () => await ClientNode.Socket.SendMatchStateAsync(match.Id, opCode, JsonWriter.ToJson(UserID)));
-		}
 	}
 }
 
