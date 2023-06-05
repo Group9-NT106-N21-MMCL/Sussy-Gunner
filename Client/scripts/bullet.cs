@@ -11,7 +11,7 @@ public partial class bullet : CharacterBody2D
 	float maxRange = 1000;
 	float distanceTravelled = 0;
 	public float damage = 20;
-	float speed = 1200;
+	float speed = 1500;
 	private IMatch match;
 	public void SetMatch(IMatch X) => match = X;
 	public override void _Process(double delta)

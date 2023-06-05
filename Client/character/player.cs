@@ -10,15 +10,17 @@ public partial class player : CharacterBody2D
 	private ClientNode ClientNode => this.Autoload<ClientNode>();
 	private IMatch match;
 	public const float Speed = 300.0f;
-	private bool isFlip = false;
-	private bool SendIdleState = false;
-	private int ammoAmount = 20;
-	private int health = 10;
-	private int DeathCountDown = 500;
+	private bool isFlip = false, SendIdleState = false;
+	private int ammoAmount = 20, health = 10, DeathCountDown = 500, Kill = 0, Dead = 0;
 	AnimationPlayer animationPlayer;
 	Sprite2D body, DeathBody, gun;
+	Node2D HealthBar;
 	Marker2D bulletPos;
-	CollisionShape2D colision, PlayerArea;	
+	CollisionShape2D colision, PlayerArea;
+	public void IncDead() => ++Dead;
+	public void IncKill() => ++Kill;
+	public int GetKill() => Kill;
+	public int GetDead() => Dead;
 	public void SetHealth(int X) => health = X;
 	public void SetMatch(IMatch X) => match = X;
 	public void SetGunRotate(float X) => gun.Rotation = X;
@@ -41,10 +43,11 @@ public partial class player : CharacterBody2D
 		colision = GetNode<CollisionShape2D>("Collision");
 		bulletPos = GetNode<Marker2D>("Character/Hand/BulletPos");
 		PlayerArea = GetNode<CollisionShape2D>("Area/AreaShape");
+		HealthBar = GetNode<Node2D>("HealthBar");
 	}
 	public override void _PhysicsProcess(double delta)
 	{
-		if (Name == ClientNode.Session.Username)
+		if (Name == ClientNode.Session.UserId)
 		{
 			if (health <= 0) //User dead
 			{
@@ -55,6 +58,7 @@ public partial class player : CharacterBody2D
 
 					body.Visible = gun.Visible = false;
 					DeathBody.Visible = colision.Disabled = PlayerArea.Disabled = true;
+					++Dead;
 					LetDead();
 				}
 				--DeathCountDown;
@@ -67,6 +71,8 @@ public partial class player : CharacterBody2D
 					DeathCountDown = 500;
 					body.Visible = gun.Visible = true;
 					DeathBody.Visible = colision.Disabled = PlayerArea.Disabled = false;
+					foreach (Sprite2D heart in HealthBar.GetChildren())
+						heart.Visible = !heart.Visible;
 					LetLive();
 				}
 			}
@@ -107,13 +113,13 @@ public partial class player : CharacterBody2D
 	}
 	public override void _UnhandledInput(InputEvent @event)
 	{
-		if (Name == ClientNode.Session.Username)
+		if (Name == ClientNode.Session.UserId)
 		{
 			if (@event is InputEventMouseButton mouseEvent)
 			{
 				if (mouseEvent.ButtonIndex == MouseButton.Left && mouseEvent.Pressed && ammoAmount > 0)
 				{
-					Task.Run(async () => await Shoot());
+					Task.Run(async () => await Shoot(ClientNode.Session.UserId));
 
 					var opCode = 2;
 					var state = new ClientNode.PlayerState { GunRoate = gun.Rotation, GunFlip = gun.FlipV };
@@ -122,12 +128,13 @@ public partial class player : CharacterBody2D
 			}
 		}
 	}
-	public async Task Shoot(float? Rotation = null)
+	public async Task Shoot(string UserID, float? Rotation = null)
 	{
 		if (health <= 0) return; //User dead cannot shoot
 		var bulletScene = GD.Load<PackedScene>("res://scenes/bullet.tscn");
 		var _bullet = bulletScene.Instantiate<bullet>();
 
+		_bullet.GetNode<Area2D>("BulletArea").Name = $"BulletArea_{UserID}";
 		_bullet.Rotation = (float)((Rotation == null) ? gun.Rotation : Rotation);
 		_bullet.Position = bulletPos.GlobalPosition;
 		_bullet.Scale = new Vector2((float)0.5, (float)0.5);
@@ -155,13 +162,35 @@ public partial class player : CharacterBody2D
 		DeathBody.Visible = colision.Disabled = PlayerArea.Disabled = !Live;
 		DeathBody.FlipH = body.FlipH;
 
-		if (Live) CallDeferred("LetLive");
+		if (Live)
+		{
+			CallDeferred("LetLive");
+			foreach (Sprite2D heart in HealthBar.GetChildren())
+				heart.Visible = !heart.Visible;
+		}
 		else CallDeferred("LetDead");
 	}
 	private void _on_area_area_entered(Area2D area)
 	{
-		if (area.Name == "BulletArea")
+		var AreaName = area.Name.ToString();
+		if (AreaName.StartsWith("BulletArea"))
+		{
+			var IDWhoShoot = AreaName.Split('_')[1];
+			if (IDWhoShoot == Name) return;
+
 			health -= 2;
+			foreach (Sprite2D heart in HealthBar.GetChildren())
+				if (heart.Visible)
+				{
+					heart.Visible = false;
+					break;
+				}
+			if (health == 0)
+			{
+				var opCode = 7;
+				Task.Run(async () => await ClientNode.Socket.SendMatchStateAsync(match.Id, opCode, JsonWriter.ToJson(IDWhoShoot)));
+			}
+		}
 	}
 }
 

@@ -44,7 +44,8 @@ public partial class dashboard : Control
         match = null;
         var MatchName = GetNode<LineEdit>("MarginContainer2/VBoxContainer/RoomName").Text;
         match = await ClientNode.Socket.CreateMatchAsync(MatchName);
-        if (match.Presences.ToList().Count() == 0) //Room just have only you -> Room do not exit
+        var NumPlayer = match.Presences.ToList().Count();
+        if (NumPlayer == 0 || NumPlayer >= 4) //Room just have only you or run out of slot -> Room do not exit
         {
             await ClientNode.Socket.LeaveMatchAsync(match.Id);
             var Red = new Godot.Color("#FF0000");

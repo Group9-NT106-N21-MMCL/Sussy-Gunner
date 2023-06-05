@@ -1,10 +1,11 @@
-[gd_scene load_steps=12 format=3 uid="uid://bo7tgpravy76l"]
+[gd_scene load_steps=13 format=3 uid="uid://bo7tgpravy76l"]
 
 [ext_resource type="Script" path="res://character/player.cs" id="1_7qyjg"]
 [ext_resource type="Texture2D" uid="uid://ptw2ucrqri6g" path="res://images/Player.png" id="1_40qti"]
 [ext_resource type="Texture2D" uid="uid://l8ykakvcbi28" path="res://images/PlayerHand.png" id="3_vmjno"]
 [ext_resource type="Texture2D" uid="uid://wxtwsmumadw" path="res://images/death.png" id="4_2n3hu"]
 [ext_resource type="Texture2D" uid="uid://dk17kurib2wok" path="res://images/health.png" id="5_x6yes"]
+[ext_resource type="FontFile" uid="uid://cptihme2u2tow" path="res://fonts/In your face, joffrey!.ttf" id="6_rj5al"]
 
 [sub_resource type="Animation" id="Animation_pafxr"]
 length = 0.001
@@ -108,7 +109,8 @@ hframes = 4
 vframes = 4
 
 [node name="Hand" type="Sprite2D" parent="Character"]
-scale = Vector2(0.825, 0.7625)
+position = Vector2(8, 5)
+scale = Vector2(1, 0.924)
 texture = ExtResource("3_vmjno")
 
 [node name="BulletPos" type="Marker2D" parent="Character/Hand"]
@@ -129,19 +131,16 @@ vframes = 2
 
 [node name="Collision" type="CollisionShape2D" parent="."]
 position = Vector2(-2, -1)
-scale = Vector2(0.8, 0.8)
 shape = SubResource("CapsuleShape2D_lm8re")
 
 [node name="Area" type="Area2D" parent="."]
-position = Vector2(-1, -1)
-scale = Vector2(0.75, 0.75)
+position = Vector2(-2, -1)
 
 [node name="AreaShape" type="CollisionShape2D" parent="Area"]
-position = Vector2(-1, -1)
-scale = Vector2(1.3, 1.3)
 shape = SubResource("CapsuleShape2D_lm8re")
 
 [node name="HealthBar" type="Node2D" parent="."]
+position = Vector2(0, -8)
 
 [node name="Health1" type="Sprite2D" parent="HealthBar"]
 position = Vector2(-67, -56)
@@ -169,10 +168,15 @@ scale = Vector2(0.09375, 0.09375)
 texture = ExtResource("5_x6yes")
 
 [node name="PlayerName" type="Label" parent="."]
-offset_left = -18.0
-offset_top = -95.0
-offset_right = 22.0
-offset_bottom = -69.0
+offset_left = -80.0
+offset_top = -127.0
+offset_right = 74.0
+offset_bottom = -74.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_rj5al")
+theme_override_font_sizes/font_size = 40
 text = "Test"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="area_entered" from="Area" to="." method="_on_area_area_entered"]
