@@ -40,6 +40,7 @@ public partial class map : Node2D
 		var UserID = matchState.UserPresence.UserId;
 		var Username = matchState.UserPresence.Username;
 		var JsonData = Encoding.UTF8.GetString(matchState.State);
+		if (UserID != ClientNode.Session.UserId) return;
 		switch (matchState.OpCode)
 		{
 			case 0: //Move player
@@ -119,6 +120,7 @@ public partial class map : Node2D
 	// Called when the node enters the scene tree for the first time.
 	public override async void _Ready()
 	{
+		Name = ClientNode.Session.UserId;
 		GetNode<Chat_Box>("Quit/ChatButton/Chat_Box").SetMatch(match);
 		ChatFrame = GetNode<Chat_Box>("Quit/ChatButton/Chat_Box").GetNode<ItemList>("ChatFrame");
 		MatchKD = GetNode<Control>("TabBoard/Tab");
