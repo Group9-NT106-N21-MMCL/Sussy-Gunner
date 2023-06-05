@@ -81,9 +81,15 @@ public partial class player : CharacterBody2D
 				gun.LookAt(GetGlobalMousePosition());
 				GetParent().GetNode<Camera2D>("Camera2D").Position = Position;
 
-				var inputDirection = Input.GetVector("move_left", "move_right", "move_up", "move_down");
+				var inputDirection = new Vector2(0, 0);
+				if (!GetParent().GetNode<Control>("Quit/ChatButton/Chat_Box").Visible)
+					inputDirection = Input.GetVector("move_left", "move_right", "move_up", "move_down");
 				if (Input.IsActionPressed("reload") && ammoAmount == 0)
+				{
 					ammoAmount = 20; //Reload bullet
+					GetParent().GetNode<Label>("RemainingBullet/BulletNumber").Text = $"{ammoAmount}/20";
+				}
+
 				if (inputDirection.X != 0)
 					body.FlipH = inputDirection.X < 0;
 				gun.FlipV = body.FlipH;
@@ -140,6 +146,7 @@ public partial class player : CharacterBody2D
 		_bullet.Scale = new Vector2((float)0.5, (float)0.5);
 		_bullet.SetMatch(match);
 		ammoAmount -= 1;
+		GetParent().GetNode<Label>("RemainingBullet/BulletNumber").Text = $"{ammoAmount}/20";
 
 		CallDeferred("Add_Child", _bullet);
 	}

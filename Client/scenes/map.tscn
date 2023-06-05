@@ -253,7 +253,7 @@ offset_bottom = 77.0
 grow_horizontal = 0
 theme_override_fonts/font = ExtResource("10_rlqbn")
 theme_override_font_sizes/font_size = 50
-text = "10/10"
+text = "20/20"
 
 [node name="Sprite2D" type="Sprite2D" parent="RemainingBullet"]
 position = Vector2(968, 48)
