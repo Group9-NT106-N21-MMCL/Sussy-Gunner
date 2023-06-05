@@ -1,0 +1,204 @@
+[gd_scene load_steps=5 format=3 uid="uid://tejldqxcoifp"]
+
+[ext_resource type="Texture2D" uid="uid://b5frwb42twfxc" path="res://images/Tab.png" id="1_1i5p7"]
+[ext_resource type="Texture2D" uid="uid://bhbagvsxkdbuf" path="res://images/no_crew-sharedassets2.assets-22.png" id="2_0egb5"]
+[ext_resource type="Texture2D" uid="uid://cswvxm3skbw7w" path="res://images/KillIcon.png" id="3_7cm0x"]
+[ext_resource type="Texture2D" uid="uid://bsk3g78hhswbt" path="res://images/DeadIcon.png" id="4_kt443"]
+
+[node name="Tab" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Tabboard" type="Sprite2D" parent="."]
+position = Vector2(576, 312)
+texture = ExtResource("1_1i5p7")
+
+[node name="PlayerLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 392.0
+offset_top = 88.0
+offset_right = 449.0
+offset_bottom = 114.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Players"
+
+[node name="KDLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 712.0
+offset_top = 88.0
+offset_right = 744.0
+offset_bottom = 114.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "K/D"
+
+[node name="Names" type="Node2D" parent="."]
+position = Vector2(-64, 0)
+
+[node name="Player1_Name" type="Label" parent="Names"]
+offset_left = 472.0
+offset_top = 168.0
+offset_right = 534.0
+offset_bottom = 194.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Player 1"
+
+[node name="Player2_Name" type="Label" parent="Names"]
+offset_left = 472.0
+offset_top = 280.0
+offset_right = 534.0
+offset_bottom = 306.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Player 2"
+
+[node name="Player3_Name" type="Label" parent="Names"]
+offset_left = 472.0
+offset_top = 392.0
+offset_right = 534.0
+offset_bottom = 418.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Player 3"
+
+[node name="Player4_Name" type="Label" parent="Names"]
+offset_left = 472.0
+offset_top = 504.0
+offset_right = 534.0
+offset_bottom = 530.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Player 4"
+
+[node name="Players" type="Node2D" parent="."]
+position = Vector2(-64, 0)
+
+[node name="Player1" type="Sprite2D" parent="Players"]
+position = Vector2(408, 176)
+scale = Vector2(0.215217, 0.215217)
+texture = ExtResource("2_0egb5")
+
+[node name="Player2" type="Sprite2D" parent="Players"]
+position = Vector2(408, 288)
+scale = Vector2(0.215217, 0.215217)
+texture = ExtResource("2_0egb5")
+
+[node name="Player3" type="Sprite2D" parent="Players"]
+position = Vector2(408, 400)
+scale = Vector2(0.215217, 0.215217)
+texture = ExtResource("2_0egb5")
+
+[node name="Player4" type="Sprite2D" parent="Players"]
+position = Vector2(408, 512)
+scale = Vector2(0.215217, 0.215217)
+texture = ExtResource("2_0egb5")
+
+[node name="KillDead" type="Node2D" parent="."]
+position = Vector2(-64, 0)
+
+[node name="Player_Kill1" type="Label" parent="KillDead"]
+offset_left = 744.0
+offset_top = 168.0
+offset_right = 760.0
+offset_bottom = 194.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "0"
+
+[node name="Player_Dead1" type="Label" parent="KillDead"]
+offset_left = 872.0
+offset_top = 168.0
+offset_right = 888.0
+offset_bottom = 194.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "0"
+
+[node name="Player_Kill2" type="Label" parent="KillDead"]
+offset_left = 744.0
+offset_top = 288.0
+offset_right = 760.0
+offset_bottom = 314.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "0"
+
+[node name="Player_Dead2" type="Label" parent="KillDead"]
+offset_left = 872.0
+offset_top = 288.0
+offset_right = 888.0
+offset_bottom = 314.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "0"
+
+[node name="Player_Kill3" type="Label" parent="KillDead"]
+offset_left = 744.0
+offset_top = 400.0
+offset_right = 760.0
+offset_bottom = 426.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "0"
+
+[node name="Player_Dead3" type="Label" parent="KillDead"]
+offset_left = 872.0
+offset_top = 400.0
+offset_right = 888.0
+offset_bottom = 426.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "0"
+
+[node name="Player_Kill4" type="Label" parent="KillDead"]
+offset_left = 744.0
+offset_top = 504.0
+offset_right = 760.0
+offset_bottom = 530.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "0"
+
+[node name="Player_Dead4" type="Label" parent="KillDead"]
+offset_left = 872.0
+offset_top = 504.0
+offset_right = 888.0
+offset_bottom = 530.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "0"
+
+[node name="Icons" type="Node2D" parent="."]
+position = Vector2(-64, 0)
+
+[node name="Kill1" type="Sprite2D" parent="Icons"]
+position = Vector2(696, 178)
+scale = Vector2(0.355856, 0.355856)
+texture = ExtResource("3_7cm0x")
+
+[node name="Dead1" type="Sprite2D" parent="Icons"]
+position = Vector2(834.062, 179.274)
+scale = Vector2(0.442459, 0.442459)
+texture = ExtResource("4_kt443")
+
+[node name="Kill2" type="Sprite2D" parent="Icons"]
+position = Vector2(696, 296)
+scale = Vector2(0.355856, 0.355856)
+texture = ExtResource("3_7cm0x")
+
+[node name="Dead2" type="Sprite2D" parent="Icons"]
+position = Vector2(832, 304)
+scale = Vector2(0.442459, 0.442459)
+texture = ExtResource("4_kt443")
+
+[node name="Kill3" type="Sprite2D" parent="Icons"]
+position = Vector2(696, 408)
+scale = Vector2(0.355856, 0.355856)
+texture = ExtResource("3_7cm0x")
+
+[node name="Dead3" type="Sprite2D" parent="Icons"]
+position = Vector2(832, 408)
+scale = Vector2(0.442459, 0.442459)
+texture = ExtResource("4_kt443")
+
+[node name="Kill4" type="Sprite2D" parent="Icons"]
+position = Vector2(696, 512)
+scale = Vector2(0.355856, 0.355856)
+texture = ExtResource("3_7cm0x")
+
+[node name="Dead4" type="Sprite2D" parent="Icons"]
+position = Vector2(840, 512)
+scale = Vector2(0.442459, 0.442459)
+texture = ExtResource("4_kt443")
