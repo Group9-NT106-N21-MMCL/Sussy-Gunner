@@ -18,7 +18,7 @@ public partial class player : CharacterBody2D
 	AnimationPlayer animationPlayer;
 	Sprite2D body, DeathBody, gun;
 	Marker2D bulletPos;
-	CollisionShape2D colision, PlayerArea;
+	CollisionShape2D colision, PlayerArea;	
 	public void SetHealth(int X) => health = X;
 	public void SetMatch(IMatch X) => match = X;
 	public void SetGunRotate(float X) => gun.Rotation = X;
@@ -75,7 +75,7 @@ public partial class player : CharacterBody2D
 				gun.LookAt(GetGlobalMousePosition());
 				GetParent().GetNode<Camera2D>("Camera2D").Position = Position;
 
-				var inputDirection = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
+				var inputDirection = Input.GetVector("move_left", "move_right", "move_up", "move_down");
 				if (Input.IsActionPressed("reload") && ammoAmount == 0)
 					ammoAmount = 20; //Reload bullet
 				if (inputDirection.X != 0)
