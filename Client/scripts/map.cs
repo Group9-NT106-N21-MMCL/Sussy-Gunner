@@ -40,7 +40,6 @@ public partial class map : Node2D
         var UserID = matchState.UserPresence.UserId;
         var Username = matchState.UserPresence.Username;
         var JsonData = Encoding.UTF8.GetString(matchState.State);
-        if (Name != ClientNode.Session.UserId) return;
         switch (matchState.OpCode)
         {
             case 0: //Move player
@@ -141,6 +140,8 @@ public partial class map : Node2D
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override async void _PhysicsProcess(double delta)
     {
+        var ammoAmount = players[ClientNode.Session.UserId].GetAmmor();
+        GetNode<Label>("RemainingBullet/BulletNumber").Text = $"{ammoAmount}/20";
         time += delta;
         if (0.1 <= time && time <= 0.2)
         {

@@ -20,6 +20,7 @@ public partial class player : CharacterBody2D
 	CollisionShape2D colision, PlayerArea;
 	public void IncDead() => ++Dead;
 	public void IncKill() => ++Kill;
+	public int GetAmmor() => ammoAmount;
 	public int GetKill() => Kill;
 	public int GetDead() => Dead;
 	public void SetHealth(int X) => health = X;
