@@ -46,7 +46,6 @@ public partial class player : CharacterBody2D
 	{
 		if (Name == ClientNode.Session.Username)
 		{
-			var CheckChangePos = Position;
 			if (health <= 0) //User dead
 			{
 				if (!DeathBody.Visible) //Still not send match state
