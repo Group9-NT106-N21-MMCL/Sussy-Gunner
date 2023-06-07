@@ -7,12 +7,13 @@ public partial class ClientNode : Node
 	public class PlayerState
 	{
 		public bool isDirection = false;
+		public int Health = 10;
 		public float PosX = 0, PosY = 0;
 		public float GunRoate = 0;
 		public bool GunFlip = false;
 	}
 	private const string Scheme = "http";
-	private const string Host = "sussy-gunner.fly.dev";
+	private const string Host = "100.92.111.45";
 	private const int Port = 7350;
 	private const string ServerKey = "defaultkey";
 	public IClient? Client;

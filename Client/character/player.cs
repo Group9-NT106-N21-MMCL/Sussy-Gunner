@@ -13,7 +13,7 @@ public partial class player : CharacterBody2D
 	private bool isFlip = false, SendIdleState = false;
 	private int ammoAmount = 20, health = 10, DeathCountDown = 500, Kill = 0, Dead = 0;
 	AnimationPlayer animationPlayer;
-	Sprite2D body, DeathBody, gun;
+	Sprite2D body, DeathBody, gun, heart1, heart2, heart3, heart4, heart5;
 	Node2D HealthBar;
 	Marker2D bulletPos;
 	PackedScene bulletScene;
@@ -47,8 +47,13 @@ public partial class player : CharacterBody2D
 		PlayerArea = GetNode<CollisionShape2D>("Area/AreaShape");
 		HealthBar = GetNode<Node2D>("HealthBar");
 		bulletScene = GD.Load<PackedScene>("res://scenes/bullet.tscn");
+		heart1 = GetNode<Sprite2D>("HealthBar/Health1");
+		heart2 = GetNode<Sprite2D>("HealthBar/Health2");
+		heart3 = GetNode<Sprite2D>("HealthBar/Health3");
+		heart4 = GetNode<Sprite2D>("HealthBar/Health4");
+		heart5 = GetNode<Sprite2D>("HealthBar/Health5");
 	}
-	public override void _PhysicsProcess(double delta)
+	public async override void _PhysicsProcess(double delta)
 	{
 		if (Name == ClientNode.Session.UserId)
 		{
@@ -57,7 +62,7 @@ public partial class player : CharacterBody2D
 				if (!DeathBody.Visible) //Still not send match state
 				{
 					var opCode = 3; //Send state dead
-					Task.Run(async () => await ClientNode.Socket.SendMatchStateAsync(match.Id, opCode, JsonWriter.ToJson("Dead!")));
+					await ClientNode.Socket.SendMatchStateAsync(match.Id, opCode, JsonWriter.ToJson("Dead!"));
 
 					body.Visible = gun.Visible = false;
 					DeathBody.Visible = colision.Disabled = PlayerArea.Disabled = true;
@@ -68,14 +73,12 @@ public partial class player : CharacterBody2D
 				if (DeathCountDown <= 0)
 				{
 					var opCode = 3; //Send state alive
-					Task.Run(async () => await ClientNode.Socket.SendMatchStateAsync(match.Id, opCode, JsonWriter.ToJson("Live!")));
+					await ClientNode.Socket.SendMatchStateAsync(match.Id, opCode, JsonWriter.ToJson("Live!"));
 
 					health = 10;
 					DeathCountDown = 500;
 					body.Visible = gun.Visible = true;
 					DeathBody.Visible = colision.Disabled = PlayerArea.Disabled = false;
-					foreach (Sprite2D heart in HealthBar.GetChildren())
-						heart.Visible = !heart.Visible;
 					LetLive();
 				}
 			}
@@ -88,10 +91,7 @@ public partial class player : CharacterBody2D
 				if (!GetParent().GetNode<Control>("Quit/ChatButton/Chat_Box").Visible)
 					inputDirection = Input.GetVector("move_left", "move_right", "move_up", "move_down");
 				if (Input.IsActionPressed("reload") && ammoAmount == 0)
-				{
 					ammoAmount = 20; //Reload bullet
-					GetParent().GetNode<Label>("RemainingBullet/BulletNumber").Text = $"{ammoAmount}/20";
-				}
 
 				if (inputDirection.X != 0)
 					body.FlipH = inputDirection.X < 0;
@@ -103,8 +103,8 @@ public partial class player : CharacterBody2D
 					Velocity = inputDirection * Speed;
 					LetMove();
 					var opCode = 0; //Send position
-					var state = new ClientNode.PlayerState { isDirection = true, PosX = inputDirection.X, PosY = inputDirection.Y, GunRoate = gun.Rotation, GunFlip = gun.FlipV };
-					Task.Run(async () => await ClientNode.Socket.SendMatchStateAsync(match.Id, opCode, JsonWriter.ToJson(state)));
+					var state = new ClientNode.PlayerState { isDirection = true, PosX = inputDirection.X, PosY = inputDirection.Y, Health = health, GunRoate = gun.Rotation, GunFlip = gun.FlipV };
+					await ClientNode.Socket.SendMatchStateAsync(match.Id, opCode, JsonWriter.ToJson(state));
 				}
 				else
 				{
@@ -113,14 +113,42 @@ public partial class player : CharacterBody2D
 					{
 						SendIdleState = true;
 						var opCode = 0; //Send position
-						var state = new ClientNode.PlayerState { isDirection = false, PosX = Position.X, PosY = Position.Y, GunRoate = gun.Rotation, GunFlip = gun.FlipV };
-						Task.Run(async () => await ClientNode.Socket.SendMatchStateAsync(match.Id, opCode, JsonWriter.ToJson(state)));
+						var state = new ClientNode.PlayerState { isDirection = false, PosX = Position.X, PosY = Position.Y, Health = health, GunRoate = gun.Rotation, GunFlip = gun.FlipV };
+						await ClientNode.Socket.SendMatchStateAsync(match.Id, opCode, JsonWriter.ToJson(state));
 					}
 				}
 			}
 		}
 	}
-	public override void _UnhandledInput(InputEvent @event)
+	public async Task DisplayHealth()
+	{
+		switch (health)
+		{
+			case 10:
+				heart1.Visible = heart2.Visible = heart3.Visible = heart4.Visible = heart5.Visible = true;
+				break;
+			case 8:
+				heart1.Visible = heart2.Visible = heart3.Visible = heart4.Visible = true;
+				heart5.Visible = false;
+				break;
+			case 6:
+				heart1.Visible = heart2.Visible = heart3.Visible = true;
+				heart5.Visible = heart4.Visible = false;
+				break;
+			case 4:
+				heart1.Visible = heart2.Visible = true;
+				heart5.Visible = heart4.Visible = heart3.Visible = false;
+				break;
+			case 2:
+				heart1.Visible = true;
+				heart5.Visible = heart4.Visible = heart3.Visible = heart2.Visible = false;
+				break;
+			default:
+				heart5.Visible = heart4.Visible = heart3.Visible = heart2.Visible = heart1.Visible = false;
+				break;
+		}
+	}
+	public async override void _UnhandledInput(InputEvent @event)
 	{
 		if (Name == ClientNode.Session.UserId)
 		{
@@ -128,11 +156,11 @@ public partial class player : CharacterBody2D
 			{
 				if (mouseEvent.ButtonIndex == MouseButton.Left && mouseEvent.Pressed && ammoAmount > 0)
 				{
-					Task.Run(async () => await Shoot(ClientNode.Session.UserId));
+					await Shoot(ClientNode.Session.UserId);
 
 					var opCode = 2;
 					var state = new ClientNode.PlayerState { GunRoate = gun.Rotation, GunFlip = gun.FlipV };
-					Task.Run(async () => await ClientNode.Socket.SendMatchStateAsync(match.Id, opCode, JsonWriter.ToJson(state)));
+					await ClientNode.Socket.SendMatchStateAsync(match.Id, opCode, JsonWriter.ToJson(state));
 				}
 			}
 		}
@@ -170,15 +198,10 @@ public partial class player : CharacterBody2D
 		DeathBody.Visible = colision.Disabled = PlayerArea.Disabled = !Live;
 		DeathBody.FlipH = body.FlipH;
 
-		if (Live)
-		{
-			CallDeferred("LetLive");
-			foreach (Sprite2D heart in HealthBar.GetChildren())
-				heart.Visible = !heart.Visible;
-		}
+		if (Live) CallDeferred("LetLive");
 		else CallDeferred("LetDead");
 	}
-	private void _on_area_area_entered(Area2D area)
+	private async void _on_area_area_entered(Area2D area)
 	{
 		var AreaName = area.Name.ToString();
 		if (AreaName.StartsWith("BulletArea"))
@@ -187,16 +210,10 @@ public partial class player : CharacterBody2D
 			if (IDWhoShoot == Name) return;
 
 			health -= 2;
-			foreach (Sprite2D heart in HealthBar.GetChildren())
-				if (heart.Visible)
-				{
-					heart.Visible = false;
-					break;
-				}
 			if (health == 0)
 			{
 				var opCode = 7;
-				Task.Run(async () => await ClientNode.Socket.SendMatchStateAsync(match.Id, opCode, JsonWriter.ToJson(IDWhoShoot)));
+				await ClientNode.Socket.SendMatchStateAsync(match.Id, opCode, JsonWriter.ToJson(IDWhoShoot));
 			}
 		}
 	}
