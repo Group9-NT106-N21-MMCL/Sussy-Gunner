@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dx3btxtx6n24q"]
+[gd_scene load_steps=22 format=3 uid="uid://dx3btxtx6n24q"]
 
 [ext_resource type="Script" path="res://scripts/map.cs" id="1_rw77l"]
 [ext_resource type="Texture2D" uid="uid://j4gk2wxoeyq4" path="res://images/Map.png" id="3_rwxv8"]
@@ -12,6 +12,51 @@
 [ext_resource type="FontFile" uid="uid://cptihme2u2tow" path="res://fonts/In your face, joffrey!.ttf" id="10_rlqbn"]
 [ext_resource type="Texture2D" uid="uid://bo6vt1nc7dci8" path="res://images/RemainBullet.png" id="11_u3m4w"]
 [ext_resource type="PackedScene" uid="uid://bdlu25wwlqjph" path="res://scenes/tab.tscn" id="12_rk8kv"]
+[ext_resource type="Texture2D" uid="uid://cjftarqsy6wj0" path="res://images/fire_buff.png" id="13_grulb"]
+[ext_resource type="Texture2D" uid="uid://c6ecf27ukuj18" path="res://images/ice_buff.png" id="14_qfml6"]
+[ext_resource type="Texture2D" uid="uid://dbxcatj6g5phb" path="res://images/multi_bullets.png" id="15_y1b0c"]
+[ext_resource type="Texture2D" uid="uid://bfkrkl36a27cb" path="res://images/heal.png" id="16_7r5ee"]
+[ext_resource type="Texture2D" uid="uid://r8ubech53myk" path="res://images/zoom_out.png" id="17_d1i08"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_oh2pf"]
+radius = 24.0
+
+[sub_resource type="Animation" id="Animation_ocw6d"]
+resource_name = "Bounce"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ZoomTexture:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1233.5, 581), Vector2(1233.5, 584)]
+}
+
+[sub_resource type="Animation" id="Animation_nb4f8"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ZoomTexture:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1233.5, 581)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jhkl6"]
+_data = {
+"Bounce": SubResource("Animation_ocw6d"),
+"RESET": SubResource("Animation_nb4f8")
+}
 
 [node name="Map" type="Node2D"]
 script = ExtResource("1_rw77l")
@@ -165,7 +210,7 @@ polygon = PackedVector2Array(1176, 721, 1229, 694, 1311, 684, 1349, 687, 1333, 6
 [node name="Map" type="Sprite2D" parent="."]
 light_mask = 4
 visibility_layer = 4
-position = Vector2(632, 363)
+position = Vector2(632, 367)
 texture = ExtResource("3_rwxv8")
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -264,6 +309,112 @@ texture = ExtResource("11_u3m4w")
 
 [node name="Tab" parent="TabBoard" instance=ExtResource("12_rk8kv")]
 visible = false
+
+[node name="Buff" type="Node2D" parent="."]
+
+[node name="FireBullet" type="Node2D" parent="Buff"]
+
+[node name="FireBulletTexture" type="Sprite2D" parent="Buff/FireBullet"]
+position = Vector2(1233.5, 579.703)
+scale = Vector2(0.305, 0.304999)
+texture = ExtResource("13_grulb")
+
+[node name="Area2D" type="Area2D" parent="Buff/FireBullet/FireBulletTexture"]
+position = Vector2(-4044.26, -1893.45)
+scale = Vector2(3.27869, 3.2787)
+
+[node name="FireBulletArea" type="CollisionShape2D" parent="Buff/FireBullet/FireBulletTexture/Area2D"]
+position = Vector2(1234, 577)
+shape = SubResource("CircleShape2D_oh2pf")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Buff/FireBullet"]
+libraries = {
+"": SubResource("AnimationLibrary_jhkl6")
+}
+
+[node name="IceBullet" type="Node2D" parent="Buff"]
+position = Vector2(-1000, -176)
+
+[node name="IceBulletTexture" type="Sprite2D" parent="Buff/IceBullet"]
+position = Vector2(1233.5, 578.627)
+scale = Vector2(0.305, 0.304999)
+texture = ExtResource("14_qfml6")
+
+[node name="Area2D" type="Area2D" parent="Buff/IceBullet/IceBulletTexture"]
+position = Vector2(-4044.26, -1893.45)
+scale = Vector2(3.27869, 3.2787)
+
+[node name="IceBulletArea" type="CollisionShape2D" parent="Buff/IceBullet/IceBulletTexture/Area2D"]
+position = Vector2(1234, 577)
+shape = SubResource("CircleShape2D_oh2pf")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Buff/IceBullet"]
+libraries = {
+"": SubResource("AnimationLibrary_jhkl6")
+}
+
+[node name="ThreeBullet" type="Node2D" parent="Buff"]
+position = Vector2(-1232, 488)
+
+[node name="ThreeBulletTexture" type="Sprite2D" parent="Buff/ThreeBullet"]
+position = Vector2(1233.5, 578.223)
+scale = Vector2(0.305, 0.304999)
+texture = ExtResource("15_y1b0c")
+
+[node name="Area2D" type="Area2D" parent="Buff/ThreeBullet/ThreeBulletTexture"]
+position = Vector2(-4044.26, -1893.45)
+scale = Vector2(3.27869, 3.2787)
+
+[node name="ThreeBulletArea" type="CollisionShape2D" parent="Buff/ThreeBullet/ThreeBulletTexture/Area2D"]
+position = Vector2(1234, 577)
+shape = SubResource("CircleShape2D_oh2pf")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Buff/ThreeBullet"]
+libraries = {
+"": SubResource("AnimationLibrary_jhkl6")
+}
+
+[node name="Healing" type="Node2D" parent="Buff"]
+position = Vector2(-256, 88)
+
+[node name="HealingTexture" type="Sprite2D" parent="Buff/Healing"]
+position = Vector2(1233.5, 580.101)
+scale = Vector2(0.305, 0.304999)
+texture = ExtResource("16_7r5ee")
+
+[node name="Area2D" type="Area2D" parent="Buff/Healing/HealingTexture"]
+position = Vector2(-4044.26, -1893.45)
+scale = Vector2(3.27869, 3.2787)
+
+[node name="HealingArea" type="CollisionShape2D" parent="Buff/Healing/HealingTexture/Area2D"]
+position = Vector2(1234, 577)
+shape = SubResource("CircleShape2D_oh2pf")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Buff/Healing"]
+libraries = {
+"": SubResource("AnimationLibrary_jhkl6")
+}
+
+[node name="Zoom" type="Node2D" parent="Buff"]
+position = Vector2(-1776, 368)
+
+[node name="ZoomTexture" type="Sprite2D" parent="Buff/Zoom"]
+position = Vector2(1233.5, 581)
+scale = Vector2(0.305, 0.304999)
+texture = ExtResource("17_d1i08")
+
+[node name="Area2D" type="Area2D" parent="Buff/Zoom/ZoomTexture"]
+position = Vector2(-4044.26, -1893.45)
+scale = Vector2(3.27869, 3.2787)
+
+[node name="ZoomArea" type="CollisionShape2D" parent="Buff/Zoom/ZoomTexture/Area2D"]
+position = Vector2(1234, 577)
+shape = SubResource("CircleShape2D_oh2pf")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Buff/Zoom"]
+libraries = {
+"": SubResource("AnimationLibrary_jhkl6")
+}
 
 [connection signal="pressed" from="Quit/QuitButton" to="." method="_on_quit_button_pressed"]
 [connection signal="pressed" from="Quit/ChatButton" to="." method="_on_chat_button_pressed"]
