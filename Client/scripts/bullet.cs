@@ -22,7 +22,7 @@ public partial class bullet : CharacterBody2D
 
 	public void _on_area_2d_area_entered(Area2D area)
 	{
-		if (area.Name == "WallArea" || area.Name == "Area")
+		if (area.Name == "WallArea" || area.Name == "PlayerArea")
 			QueueFree();
 	}
 }

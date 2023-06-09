@@ -133,10 +133,10 @@ vframes = 2
 position = Vector2(-2, -1)
 shape = SubResource("CapsuleShape2D_lm8re")
 
-[node name="Area" type="Area2D" parent="."]
+[node name="PlayerArea" type="Area2D" parent="."]
 position = Vector2(-2, -1)
 
-[node name="AreaShape" type="CollisionShape2D" parent="Area"]
+[node name="AreaShape" type="CollisionShape2D" parent="PlayerArea"]
 shape = SubResource("CapsuleShape2D_lm8re")
 
 [node name="HealthBar" type="Node2D" parent="."]
@@ -179,4 +179,4 @@ text = "Test"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[connection signal="area_entered" from="Area" to="." method="_on_area_area_entered"]
+[connection signal="area_entered" from="PlayerArea" to="." method="_on_area_area_entered"]
