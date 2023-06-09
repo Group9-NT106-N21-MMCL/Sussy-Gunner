@@ -27,8 +27,11 @@ public partial class dashboard : Control
         match = null;
         var MatchName = GetNode<LineEdit>("MarginContainer2/VBoxContainer/RoomName").Text;
         match = await ClientNode.Socket.CreateMatchAsync(MatchName);
-        if (match.Presences.ToList().Count() == 0) //Room just have only you -> Creat match
+        if (match.Presences.ToList().Count() == 0) //Room just have only you -> Create match
+        {
+            ClientNode.isHost = true;
             GetTree().ChangeSceneToFile("res://scenes/map.tscn");
+        }
         else //Room exist
         {
             await ClientNode.Socket.LeaveMatchAsync(match.Id);
