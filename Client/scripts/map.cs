@@ -74,6 +74,11 @@ public partial class map : Node2D
 				{
 					float GunRoate = state.GunRoate;
 					bool GunFlip = state.GunFlip;
+					players[UserID].SetGunRotate(GunRoate);
+					players[UserID].SetFlip(GunFlip);
+					players[UserID].SetHealth(state.Health);
+					players[UserID].SetFireBullet(state.isFireBullet);
+					players[UserID].SetIceBullet(state.isIceBullet);
 					if (state.isDirection)
 					{
 						await players[UserID].Move(direction, GunRoate, GunFlip);
@@ -83,9 +88,6 @@ public partial class map : Node2D
 					{
 						players[UserID].Stop();
 						players[UserID].Position = direction;
-						players[UserID].SetGunRotate(GunRoate);
-						players[UserID].SetFlip(GunFlip);
-						players[UserID].SetHealth(state.Health);
 					}
 				}
 				break;

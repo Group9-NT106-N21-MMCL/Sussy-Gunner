@@ -7,8 +7,7 @@ public partial class ClientNode : Node
     [Serializable]
     public class PlayerState
     {
-        public bool isHost = false;
-        public bool isDirection = false;
+        public bool isHost = false, isFireBullet = false, isIceBullet = false, isDirection = false;
         public int Health = 10;
         public float PosX = 0, PosY = 0;
         public float GunRoate = 0;

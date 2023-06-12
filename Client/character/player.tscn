@@ -114,7 +114,7 @@ scale = Vector2(1, 0.924)
 texture = ExtResource("3_vmjno")
 
 [node name="BulletPos" type="Marker2D" parent="Character/Hand"]
-position = Vector2(55, -6.5)
+position = Vector2(60, -6.4935)
 
 [node name="Animation" type="AnimationPlayer" parent="Character"]
 root_node = NodePath("../..")
@@ -131,10 +131,12 @@ vframes = 2
 
 [node name="Collision" type="CollisionShape2D" parent="."]
 position = Vector2(-2, -1)
+scale = Vector2(1.2, 1.2)
 shape = SubResource("CapsuleShape2D_lm8re")
 
 [node name="PlayerArea" type="Area2D" parent="."]
 position = Vector2(-2, -1)
+scale = Vector2(1.2, 1.2)
 
 [node name="AreaShape" type="CollisionShape2D" parent="PlayerArea"]
 shape = SubResource("CapsuleShape2D_lm8re")
