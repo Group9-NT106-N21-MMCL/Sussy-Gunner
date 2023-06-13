@@ -8,7 +8,7 @@ public partial class ClientNode : Node
     public class PlayerState
     {
         public bool isHost = false, isFireBullet = false, isIceBullet = false, isDirection = false;
-        public int Health = 10;
+        public int Health = 10, Kill = 0, Dead = 0;
         public float PosX = 0, PosY = 0;
         public float GunRoate = 0;
         public bool GunFlip = false;

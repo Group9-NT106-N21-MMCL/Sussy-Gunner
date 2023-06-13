@@ -27,12 +27,15 @@ public partial class player : CharacterBody2D
 	public int GetAmmor() => ammoAmount;
 	public int GetKill() => Kill;
 	public int GetDead() => Dead;
+	public int GetHealth() => health;
 	public void SetHealth(int X) => health = X;
 	public void SetMatch(IMatch X) => match = X;
 	public void SetGunRotate(float X) => gun.Rotation = X;
 	public void SetFlip(bool Flip) => gun.FlipV = body.FlipH = Flip;
 	public void SetFireBullet(bool _isFireBullet) => isFireBullet = _isFireBullet;
 	public void SetIceBullet(bool _isIceBullet) => isFireBullet = _isIceBullet;
+	public void SetKill(int _Kill) => Kill = _Kill;
+	public void SetDead(int _Dead) => Dead = _Dead;
 	private void LetDead() => GetNode<AnimationPlayer>("Character/Animation").Play("death");
 	private void LetLive() => GetNode<AnimationPlayer>("Character/Animation").Play("idle");
 	private void LetMove()
@@ -135,7 +138,19 @@ public partial class player : CharacterBody2D
 					Velocity = inputDirection * Speed;
 					LetMove();
 					var opCode = 0; //Send position
-					var state = new ClientNode.PlayerState { isDirection = true, PosX = inputDirection.X, PosY = inputDirection.Y, Health = health, GunRoate = gun.Rotation, GunFlip = gun.FlipV, isFireBullet = isFireBullet, isIceBullet = isIceBullet };
+					var state = new ClientNode.PlayerState
+					{
+						isDirection = true,
+						PosX = inputDirection.X,
+						PosY = inputDirection.Y,
+						Health = health,
+						GunRoate = gun.Rotation,
+						GunFlip = gun.FlipV,
+						isFireBullet = isFireBullet,
+						isIceBullet = isIceBullet,
+						Kill = Kill,
+						Dead = Dead
+					};
 					await ClientNode.Socket.SendMatchStateAsync(match.Id, opCode, JsonWriter.ToJson(state));
 				}
 				else
@@ -145,7 +160,19 @@ public partial class player : CharacterBody2D
 					{
 						SendIdleState = true;
 						var opCode = 0; //Send position
-						var state = new ClientNode.PlayerState { isDirection = false, PosX = Position.X, PosY = Position.Y, Health = health, GunRoate = gun.Rotation, GunFlip = gun.FlipV, isFireBullet = isFireBullet, isIceBullet = isIceBullet };
+						var state = new ClientNode.PlayerState
+						{
+							isDirection = false,
+							PosX = Position.X,
+							PosY = Position.Y,
+							Health = health,
+							GunRoate = gun.Rotation,
+							GunFlip = gun.FlipV,
+							isFireBullet = isFireBullet,
+							isIceBullet = isIceBullet,
+							Kill = Kill,
+							Dead = Dead
+						};
 						await ClientNode.Socket.SendMatchStateAsync(match.Id, opCode, JsonWriter.ToJson(state));
 					}
 				}
@@ -191,7 +218,19 @@ public partial class player : CharacterBody2D
 					await Shoot(ClientNode.Session.UserId);
 
 					var opCode = 2;
-					var state = new ClientNode.PlayerState { GunRoate = gun.Rotation, GunFlip = gun.FlipV };
+					var state = new ClientNode.PlayerState
+					{
+						isDirection = true,
+						PosX = Position.X,
+						PosY = Position.Y,
+						Health = health,
+						GunRoate = gun.Rotation,
+						GunFlip = gun.FlipV,
+						isFireBullet = isFireBullet,
+						isIceBullet = isIceBullet,
+						Kill = Kill,
+						Dead = Dead
+					};
 					await ClientNode.Socket.SendMatchStateAsync(match.Id, opCode, JsonWriter.ToJson(state));
 				}
 			}
