@@ -1,0 +1,92 @@
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+# See https://heroiclabs.com/docs/nakama/getting-started/configuration/#server-ports for Nakama server ports.
+
+app = "sussy-gunner"
+primary_region = "sin"
+kill_signal = "SIGINT"
+kill_timeout = "5s"
+
+[experimental]
+  auto_rollback = true
+
+[build]
+  dockerfile = "Dockerfile"
+  build-target = "server"
+
+[env]
+  PRIMARY_REGION = "sin"
+
+[[mounts]]
+  source = "nakama"
+  destination = "/nakama/data"
+  processes = ["app"]
+
+# Nakama HTTP API.
+[[services]]
+  protocol = "tcp"
+  internal_port = 7350
+  min_machines_running = 0
+  processes = ["app"]
+
+  [[services.ports]]
+    port = 443
+    handlers = ["tls", "http"]
+
+  [services.concurrency]
+    type = "connections"
+    hard_limit = 25
+    soft_limit = 20
+
+  [[services.http_checks]]
+    interval = "10s"
+    timeout = "2s"
+    grace_period = "5s"
+    restart_limit = 0
+    method = "get"
+    path = "/"
+
+# Nakama HTTP API.
+[[services]]
+  protocol = "tcp"
+  internal_port = 7351
+  min_machines_running = 0
+  processes = ["app"]
+
+  [[services.ports]]
+    port = 80
+    handlers = ["tcp"]
+
+  [services.concurrency]
+    type = "connections"
+    hard_limit = 25
+    soft_limit = 20
+
+  [[services.http_checks]]
+    interval = "10s"
+    timeout = "2s"
+    grace_period = "5s"
+    restart_limit = 0
+    method = "get"
+    path = "/"
+
+# Nakama gRPC API.
+[[services]]
+  protocol = "tcp"
+  internal_port = 7349
+  min_machines_running = 0
+  processes = ["app"]
+
+  [[services.ports]]
+    port = 7349
+    handlers = ["tls"]
+    tls_options = { alpn = ["h2"] }
+
+  [services.concurrency]
+    type = "connections"
+    hard_limit = 25
+    soft_limit = 20
+
+# Prometheus / Grafana
+[metrics]
+  port = 9091
+  path = "/metrics"
