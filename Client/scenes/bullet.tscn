@@ -4,8 +4,8 @@
 [ext_resource type="Texture2D" uid="uid://caj6farrjoopi" path="res://images/red_bullet.png" id="1_vra72"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0m15l"]
-radius = 5.0
-height = 15.0
+radius = 7.0
+height = 22.0
 
 [node name="Bullet" type="CharacterBody2D"]
 position = Vector2(251, 260)
