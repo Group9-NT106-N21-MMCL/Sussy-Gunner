@@ -53,7 +53,7 @@ kill_timeout = "5s"
   processes = ["app"]
 
   [[services.ports]]
-    port = 53
+    port = 7351
     handlers = ["tcp"]
 
   [services.concurrency]
