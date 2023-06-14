@@ -114,9 +114,15 @@ public partial class map : Node2D
                 var LiveOrDead = JsonParser.FromJson<String>(JsonData);
 
                 if (LiveOrDead == "Dead!")
+                {
                     await players[UserID].DeadOrLive();
+                    players[UserID].SetHealth(0);
+                }
                 else if (LiveOrDead == "Live!")
+                {
                     await players[UserID].DeadOrLive(true);
+                    players[UserID].SetHealth(10);
+                }
                 break;
 
             case 4: //Spawn player
